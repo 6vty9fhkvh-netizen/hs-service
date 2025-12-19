@@ -26,7 +26,7 @@
         
         /* 内容区 */
         .content-section {
-            max-width: 700px;
+            max-width: 750px;
             margin: 0 auto;
             padding: 30px 20px;
         }
@@ -65,7 +65,7 @@
         
         /* ========== 样例展示区 ========== */
         .sample-section {
-            max-width: 700px;
+            max-width: 750px;
             margin: 0 auto;
             padding: 0 20px 30px;
         }
@@ -145,20 +145,30 @@
         .report-header {
             text-align: center;
             padding-bottom: 15px;
-            border-bottom: 1px solid #eee;
-            margin-bottom: 15px;
+            border-bottom: 2px solid #667eea;
+            margin-bottom: 20px;
         }
         .report-header h3 {
-            font-size: 16px;
+            font-size: 18px;
             color: #333;
         }
         .report-header p {
             font-size: 12px;
             color: #999;
+            margin-top: 5px;
+        }
+        .report-country {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 3px 12px;
+            border-radius: 4px;
+            font-size: 13px;
+            margin-top: 8px;
         }
         .report-row {
             display: flex;
-            padding: 8px 0;
+            padding: 10px 0;
             border-bottom: 1px solid #f0f0f0;
             font-size: 14px;
         }
@@ -166,9 +176,10 @@
             border-bottom: none;
         }
         .report-label {
-            width: 100px;
+            width: 110px;
             color: #666;
             flex-shrink: 0;
+            font-weight: 500;
         }
         .report-value {
             color: #333;
@@ -176,21 +187,85 @@
         }
         .report-value.highlight {
             color: #667eea;
-            font-weight: 600;
-            font-size: 18px;
+            font-weight: 700;
+            font-size: 20px;
         }
         .report-section-title {
-            font-size: 14px;
-            color: #667eea;
+            font-size: 15px;
+            color: #fff;
             font-weight: 600;
-            margin: 15px 0 10px;
-            padding-top: 10px;
-            border-top: 1px solid #eee;
+            margin: 20px 0 12px;
+            padding: 8px 12px;
+            background: #667eea;
+            border-radius: 6px;
         }
         .report-text {
+            font-size: 14px;
+            color: #444;
+            line-height: 1.9;
+            padding: 0 5px;
+        }
+        .report-ref {
+            background: #f8f9fa;
+            border-left: 3px solid #667eea;
+            padding: 12px 15px;
+            margin: 10px 0;
             font-size: 13px;
+        }
+        .report-ref-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        .report-ref-link {
+            color: #667eea;
+            word-break: break-all;
+        }
+        .report-quote {
+            background: #fffde7;
+            border-left: 3px solid #ffc107;
+            padding: 12px 15px;
+            margin: 10px 0;
+            font-size: 13px;
+            font-style: italic;
             color: #555;
-            line-height: 1.8;
+        }
+        .tax-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+            font-size: 14px;
+        }
+        .tax-table th, .tax-table td {
+            border: 1px solid #e0e0e0;
+            padding: 10px;
+            text-align: left;
+        }
+        .tax-table th {
+            background: #f5f5f5;
+            font-weight: 600;
+            color: #333;
+        }
+        .report-warning {
+            background: #fff8e1;
+            border: 1px solid #ffcc80;
+            border-radius: 8px;
+            padding: 12px 15px;
+            margin: 10px 0;
+            font-size: 13px;
+        }
+        .report-warning-title {
+            color: #e65100;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        .report-footer {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+            font-size: 12px;
+            color: #999;
+            text-align: center;
         }
         
         .sample-note {
@@ -203,7 +278,7 @@
         
         /* 分隔线 */
         .divider {
-            max-width: 700px;
+            max-width: 750px;
             margin: 20px auto;
             padding: 0 20px;
         }
@@ -224,7 +299,7 @@
         
         /* 行动区 */
         .action-section {
-            max-width: 700px;
+            max-width: 750px;
             margin: 0 auto;
             padding: 20px 20px 50px;
         }
@@ -342,6 +417,7 @@
             .btn-main { font-size: 18px; padding: 18px; }
             .report-row { flex-direction: column; }
             .report-label { width: auto; margin-bottom: 3px; }
+            .tax-table { font-size: 12px; }
         }
     </style>
 </head>
@@ -399,16 +475,26 @@
                     <div class="report-header">
                         <h3>HS编码归类建议报告</h3>
                         <p>报告编号：LPXJ-20241219-001</p>
+                        <div class="report-country">🇨🇳 中国海关税则</div>
                     </div>
                     
+                    <!-- 一、产品信息 -->
+                    <div class="report-section-title">一、产品信息</div>
                     <div class="report-row">
                         <div class="report-label">产品名称</div>
                         <div class="report-value">计量型交流互感器</div>
                     </div>
                     <div class="report-row">
-                        <div class="report-label">型号</div>
+                        <div class="report-label">型号规格</div>
                         <div class="report-value">AKH-0.66G-30I 50/5 0.2级</div>
                     </div>
+                    <div class="report-row">
+                        <div class="report-label">产品解读</div>
+                        <div class="report-value">AKH-0.66G：额定电压0.66kV，G型外壳；30I：穿孔直径30mm；50/5：一次电流50A，二次电流5A（变比10:1）；0.2级：高精度计量等级</div>
+                    </div>
+                    
+                    <!-- 二、归类建议 -->
+                    <div class="report-section-title">二、归类建议</div>
                     <div class="report-row">
                         <div class="report-label">建议HS编码</div>
                         <div class="report-value highlight">8504.31.00</div>
@@ -418,25 +504,105 @@
                         <div class="report-value">额定容量不超过1千伏安的变压器</div>
                     </div>
                     
-                    <div class="report-section-title">归类依据</div>
+                    <!-- 三、归类依据 -->
+                    <div class="report-section-title">三、归类依据</div>
+                    
+                    <p class="report-text"><strong>1. 归类逻辑</strong></p>
                     <p class="report-text">
-                        电流互感器本质上是一种特殊用途的变压器，工作原理基于电磁感应。该产品额定电压0.66kV，一次电流50A，视在功率约33VA（0.033kVA），远小于1kVA，应归入8504.31。
+                        电流互感器（Current Transformer, CT）本质上是一种特殊用途的变压器，其工作原理基于电磁感应，将大电流按比例转换为标准小电流（通常为5A或1A）供计量或保护装置使用。
                     </p>
                     
-                    <div class="report-section-title">税率参考</div>
-                    <div class="report-row">
-                        <div class="report-label">最惠国税率</div>
-                        <div class="report-value">0%</div>
+                    <p class="report-text" style="margin-top:15px;"><strong>2. 税则定位</strong></p>
+                    <div class="report-ref">
+                        <div class="report-ref-title">📚 参考文件</div>
+                        <p>《中华人民共和国进出口税则（2024年）》</p>
+                        <p class="report-ref-link">http://www.customs.gov.cn/customs/302249/302266/index.html</p>
                     </div>
-                    <div class="report-row">
-                        <div class="report-label">增值税</div>
-                        <div class="report-value">13%</div>
+                    <p class="report-text">
+                        • 第85章：电机、电气设备及其零件<br>
+                        • 品目8504：变压器、静止式变流器（例如整流器）及电感器
+                    </p>
+                    
+                    <p class="report-text" style="margin-top:15px;"><strong>3. 子目确定</strong></p>
+                    <p class="report-text">
+                        • 8504.31：额定容量不超过1千伏安的变压器<br>
+                        • 8504.32：额定容量超过1千伏安但不超过16千伏安<br>
+                        • 8504.33：额定容量超过16千伏安但不超过500千伏安
+                    </p>
+                    <p class="report-text">
+                        该产品额定电压0.66kV，一次电流50A，视在功率约为33VA（0.033kVA），远小于1kVA，应归入<strong>8504.31</strong>。
+                    </p>
+                    
+                    <p class="report-text" style="margin-top:15px;"><strong>4. 品目注释支持</strong></p>
+                    <div class="report-ref">
+                        <div class="report-ref-title">📚 参考文件</div>
+                        <p>《进出口税则商品及品目注释》（海关总署2024年版）</p>
+                        <p class="report-ref-link">http://www.customs.gov.cn/customs/302249/302266/302267/index.html</p>
+                    </div>
+                    <div class="report-quote">
+                        "品目8504包括各种变压器，包括电流互感器和电压互感器。互感器作为变压器的一种特殊形式，用于测量或保护目的，归入本品目。"
                     </div>
                     
-                    <div class="report-section-title">风险提示</div>
+                    <!-- 四、税率信息 -->
+                    <div class="report-section-title">四、税率信息</div>
+                    <table class="tax-table">
+                        <tr>
+                            <th>税率类型</th>
+                            <th>税率</th>
+                        </tr>
+                        <tr>
+                            <td>最惠国税率</td>
+                            <td>0%</td>
+                        </tr>
+                        <tr>
+                            <td>普通税率</td>
+                            <td>30%</td>
+                        </tr>
+                        <tr>
+                            <td>增值税</td>
+                            <td>13%</td>
+                        </tr>
+                    </table>
+                    <div class="report-ref">
+                        <div class="report-ref-title">📚 税率查询来源</div>
+                        <p class="report-ref-link">http://www.customs.gov.cn/customs/302249/302266/302268/index.html</p>
+                    </div>
+                    
+                    <!-- 五、替代编码分析 -->
+                    <div class="report-section-title">五、替代编码分析</div>
+                    <table class="tax-table">
+                        <tr>
+                            <th>编码</th>
+                            <th>品目名称</th>
+                            <th>排除理由</th>
+                        </tr>
+                        <tr>
+                            <td>9030.33</td>
+                            <td>带记录装置的电流、电压表</td>
+                            <td>互感器本身不带显示/记录功能</td>
+                        </tr>
+                        <tr>
+                            <td>8504.32</td>
+                            <td>额定容量超过1千伏安的变压器</td>
+                            <td>本产品容量远小于1kVA</td>
+                        </tr>
+                    </table>
+                    
+                    <!-- 六、风险提示 -->
+                    <div class="report-section-title">六、风险提示</div>
+                    <div class="report-warning">
+                        <div class="report-warning-title">⚠️ 归类风险评估：低</div>
+                        <p>电流互感器归入8504.31属于常规归类，海关争议概率较小。</p>
+                    </div>
                     <p class="report-text">
-                        归类风险较低。建议保留产品说明书或规格参数表作为归类佐证材料备查。
+                        <strong>建议：</strong><br>
+                        • 保留产品说明书或规格参数表作为归类佐证材料备查<br>
+                        • 如有出口需求，建议确认目的国是否需要当地认证
                     </p>
+                    
+                    <div class="report-footer">
+                        <p>免责声明：本报告所提供的HS编码归类建议仅供参考，最终归类以进出口地海关审定为准。</p>
+                    </div>
                 </div>
             </div>
         </div>
