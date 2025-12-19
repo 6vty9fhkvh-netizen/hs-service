@@ -13,7 +13,7 @@
             line-height: 1.8;
         }
         
-        /* 顶部展示区 - 纯信息，无交互 */
+        /* 顶部展示区 */
         .info-section {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
@@ -24,9 +24,9 @@
         .info-section h1 { font-size: 28px; margin-bottom: 10px; }
         .info-section .tagline { font-size: 16px; opacity: 0.9; }
         
-        /* 内容区 - 纯文字说明 */
+        /* 内容区 */
         .content-section {
-            max-width: 600px;
+            max-width: 700px;
             margin: 0 auto;
             padding: 30px 20px;
         }
@@ -63,16 +63,153 @@
             color: #888;
         }
         
-        /* ========== 分隔线 ========== */
+        /* ========== 样例展示区 ========== */
+        .sample-section {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 0 20px 30px;
+        }
+        .sample-title {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .sample-title span {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+        
+        .sample-box {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        /* 输入部分 */
+        .sample-input {
+            background: #fff3e0;
+            padding: 20px;
+            border-bottom: 2px dashed #ccc;
+        }
+        .sample-input-label {
+            font-size: 13px;
+            color: #e65100;
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .sample-input-content {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 14px;
+            color: #333;
+            border: 1px solid #ffcc80;
+        }
+        
+        /* 箭头 */
+        .sample-arrow {
+            text-align: center;
+            padding: 15px;
+            background: #f5f5f5;
+            font-size: 24px;
+        }
+        
+        /* 输出部分 */
+        .sample-output {
+            background: #e8f5e9;
+            padding: 20px;
+        }
+        .sample-output-label {
+            font-size: 13px;
+            color: #2e7d32;
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .sample-output-content {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #a5d6a7;
+        }
+        .report-header {
+            text-align: center;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 15px;
+        }
+        .report-header h3 {
+            font-size: 16px;
+            color: #333;
+        }
+        .report-header p {
+            font-size: 12px;
+            color: #999;
+        }
+        .report-row {
+            display: flex;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 14px;
+        }
+        .report-row:last-child {
+            border-bottom: none;
+        }
+        .report-label {
+            width: 100px;
+            color: #666;
+            flex-shrink: 0;
+        }
+        .report-value {
+            color: #333;
+            flex: 1;
+        }
+        .report-value.highlight {
+            color: #667eea;
+            font-weight: 600;
+            font-size: 18px;
+        }
+        .report-section-title {
+            font-size: 14px;
+            color: #667eea;
+            font-weight: 600;
+            margin: 15px 0 10px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+        .report-text {
+            font-size: 13px;
+            color: #555;
+            line-height: 1.8;
+        }
+        
+        .sample-note {
+            text-align: center;
+            font-size: 13px;
+            color: #888;
+            margin-top: 15px;
+            font-style: italic;
+        }
+        
+        /* 分隔线 */
         .divider {
-            max-width: 600px;
+            max-width: 700px;
             margin: 20px auto;
             padding: 0 20px;
         }
         .divider-line {
             border: none;
             border-top: 2px dashed #ccc;
-            position: relative;
         }
         .divider-text {
             text-align: center;
@@ -85,9 +222,9 @@
             font-size: 14px;
         }
         
-        /* ========== 行动区 - 只有这里可以点击 ========== */
+        /* 行动区 */
         .action-section {
-            max-width: 600px;
+            max-width: 700px;
             margin: 0 auto;
             padding: 20px 20px 50px;
         }
@@ -101,8 +238,6 @@
             background: #ffeb3b;
             padding: 2px 8px;
         }
-        
-        /* 主按钮 - 超级明显 */
         .btn-main {
             display: block;
             width: 100%;
@@ -126,8 +261,6 @@
         .btn-main::before {
             content: "👉 ";
         }
-        
-        /* 次按钮 */
         .btn-secondary {
             display: block;
             width: 100%;
@@ -149,7 +282,6 @@
         .btn-secondary::before {
             content: "💬 ";
         }
-        
         .action-note {
             text-align: center;
             font-size: 13px;
@@ -157,7 +289,7 @@
             margin-top: 15px;
         }
         
-        /* 底部说明 */
+        /* 底部 */
         .footer {
             text-align: center;
             padding: 20px;
@@ -208,11 +340,13 @@
         @media (max-width: 500px) {
             .info-section h1 { font-size: 24px; }
             .btn-main { font-size: 18px; padding: 18px; }
+            .report-row { flex-direction: column; }
+            .report-label { width: auto; margin-bottom: 3px; }
         }
     </style>
 </head>
 <body>
-    <!-- ===== 展示区：纯信息，不可点击 ===== -->
+    <!-- 展示区 -->
     <div class="info-section">
         <div class="logo">📦</div>
         <h1>HS编码智能归类服务</h1>
@@ -240,20 +374,83 @@
             <h2>交付时间</h2>
             <p>24小时内交付，急件可加急</p>
         </div>
-        
-        <div class="content-block">
-            <h2>隐私保护</h2>
-            <p>仅收集归类所需信息，不要求提供公司或个人身份</p>
-        </div>
     </div>
     
-    <!-- ===== 分隔线 ===== -->
+    <!-- ========== 样例展示 ========== -->
+    <div class="sample-section">
+        <p class="sample-title"><span>📋 交付样例</span></p>
+        
+        <div class="sample-box">
+            <!-- 输入 -->
+            <div class="sample-input">
+                <div class="sample-input-label">📥 客户提交的信息（原始）</div>
+                <div class="sample-input-content">
+                    计量型交流互感器-AKH-0.66G-30I 50/5 0.2级 数量20
+                </div>
+            </div>
+            
+            <!-- 箭头 -->
+            <div class="sample-arrow">⬇️ AI分析 + 专家复核 ⬇️</div>
+            
+            <!-- 输出 -->
+            <div class="sample-output">
+                <div class="sample-output-label">📤 交付的归类报告</div>
+                <div class="sample-output-content">
+                    <div class="report-header">
+                        <h3>HS编码归类建议报告</h3>
+                        <p>报告编号：LPXJ-20241219-001</p>
+                    </div>
+                    
+                    <div class="report-row">
+                        <div class="report-label">产品名称</div>
+                        <div class="report-value">计量型交流互感器</div>
+                    </div>
+                    <div class="report-row">
+                        <div class="report-label">型号</div>
+                        <div class="report-value">AKH-0.66G-30I 50/5 0.2级</div>
+                    </div>
+                    <div class="report-row">
+                        <div class="report-label">建议HS编码</div>
+                        <div class="report-value highlight">8504.31.00</div>
+                    </div>
+                    <div class="report-row">
+                        <div class="report-label">品目名称</div>
+                        <div class="report-value">额定容量不超过1千伏安的变压器</div>
+                    </div>
+                    
+                    <div class="report-section-title">归类依据</div>
+                    <p class="report-text">
+                        电流互感器本质上是一种特殊用途的变压器，工作原理基于电磁感应。该产品额定电压0.66kV，一次电流50A，视在功率约33VA（0.033kVA），远小于1kVA，应归入8504.31。
+                    </p>
+                    
+                    <div class="report-section-title">税率参考</div>
+                    <div class="report-row">
+                        <div class="report-label">最惠国税率</div>
+                        <div class="report-value">0%</div>
+                    </div>
+                    <div class="report-row">
+                        <div class="report-label">增值税</div>
+                        <div class="report-value">13%</div>
+                    </div>
+                    
+                    <div class="report-section-title">风险提示</div>
+                    <p class="report-text">
+                        归类风险较低。建议保留产品说明书或规格参数表作为归类佐证材料备查。
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <p class="sample-note">以上为真实交付样例，已脱敏处理</p>
+    </div>
+    
+    <!-- 分隔线 -->
     <div class="divider">
         <hr class="divider-line">
         <div class="divider-text"><span>↓ 点击下方按钮开始 ↓</span></div>
     </div>
     
-    <!-- ===== 行动区：只有这里可以点击 ===== -->
+    <!-- 行动区 -->
     <div class="action-section">
         <p class="action-title"><span>请选择联系方式</span></p>
         
