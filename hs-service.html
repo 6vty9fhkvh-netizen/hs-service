@@ -1,0 +1,1495 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HS编码归类服务 | 隆天律师事务所 | 专业 · 高效 · 保密</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+            line-height: 1.8;
+        }
+        
+        /* 顶部展示区 */
+        .info-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 50px 20px 40px;
+            text-align: center;
+        }
+        .info-section .logo { font-size: 56px; margin-bottom: 15px; }
+        .info-section h1 { font-size: 28px; margin-bottom: 10px; }
+        .info-section .tagline { font-size: 16px; opacity: 0.9; }
+        
+        /* 内容区 */
+        .content-section {
+            max-width: 750px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+        .content-block {
+            margin-bottom: 25px;
+        }
+        .content-block h2 {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 12px;
+            border-left: 4px solid #667eea;
+            padding-left: 12px;
+        }
+        .content-block p, .content-block li {
+            font-size: 15px;
+            color: #555;
+            line-height: 1.9;
+        }
+        .content-block ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        .content-block li::before {
+            content: "✓ ";
+            color: #4caf50;
+        }
+        .price-text {
+            font-size: 32px;
+            font-weight: 700;
+            color: #667eea;
+        }
+        .price-note {
+            font-size: 14px;
+            color: #888;
+        }
+        
+        /* ========== 样例展示区 ========== */
+        .sample-section {
+            max-width: 750px;
+            margin: 0 auto;
+            padding: 0 20px 30px;
+        }
+        .sample-title {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .sample-title span {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+        
+        /* 分类导航 */
+        .category-nav {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .category-btn {
+            padding: 8px 20px;
+            border: 2px solid #667eea;
+            background: white;
+            color: #667eea;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        .category-btn:hover {
+            background: #f0f0ff;
+        }
+        .category-btn.active {
+            background: #667eea;
+            color: white;
+        }
+        .category-btn::before {
+            margin-right: 5px;
+        }
+        .category-btn[data-cat="electric"]::before { content: "⚡"; }
+        .category-btn[data-cat="pharma"]::before { content: "💊"; }
+        .category-btn[data-cat="chemical"]::before { content: "🧪"; }
+        .category-btn[data-cat="machine"]::before { content: "⚙️"; }
+        
+        /* 样例卡片折叠 */
+        .sample-accordion {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            margin-bottom: 15px;
+        }
+        
+        .accordion-header {
+            padding: 18px 20px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+            transition: background 0.3s;
+        }
+        .accordion-header:hover {
+            background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);
+        }
+        .accordion-header.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .accordion-header .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .accordion-header .cat-icon {
+            font-size: 24px;
+        }
+        .accordion-header .header-info h3 {
+            font-size: 16px;
+            margin-bottom: 2px;
+        }
+        .accordion-header .header-info p {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+        .accordion-header .hs-badge {
+            background: #667eea;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .accordion-header.active .hs-badge {
+            background: white;
+            color: #667eea;
+        }
+        .accordion-header .arrow {
+            font-size: 18px;
+            transition: transform 0.3s;
+        }
+        .accordion-header.active .arrow {
+            transform: rotate(180deg);
+        }
+        
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out;
+        }
+        .accordion-content.show {
+            max-height: 3000px;
+        }
+        
+        /* 输入输出展示 */
+        .sample-input {
+            background: #fff3e0;
+            padding: 20px;
+            border-bottom: 2px dashed #ccc;
+        }
+        .sample-input-label {
+            font-size: 13px;
+            color: #e65100;
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .sample-input-content {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 14px;
+            color: #333;
+            border: 1px solid #ffcc80;
+        }
+        
+        .sample-arrow {
+            text-align: center;
+            padding: 15px;
+            background: #f5f5f5;
+            font-size: 20px;
+        }
+        
+        .sample-output {
+            background: #e8f5e9;
+            padding: 20px;
+        }
+        .sample-output-label {
+            font-size: 13px;
+            color: #2e7d32;
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .sample-output-content {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #a5d6a7;
+        }
+        
+        /* 报告样式 */
+        .report-header {
+            text-align: center;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #667eea;
+            margin-bottom: 20px;
+        }
+        .report-header h3 {
+            font-size: 18px;
+            color: #333;
+        }
+        .report-header p {
+            font-size: 12px;
+            color: #999;
+            margin-top: 5px;
+        }
+        .report-country {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 3px 12px;
+            border-radius: 4px;
+            font-size: 13px;
+            margin-top: 8px;
+        }
+        .report-row {
+            display: flex;
+            padding: 10px 0;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 14px;
+        }
+        .report-row:last-child {
+            border-bottom: none;
+        }
+        .report-label {
+            width: 110px;
+            color: #666;
+            flex-shrink: 0;
+            font-weight: 500;
+        }
+        .report-value {
+            color: #333;
+            flex: 1;
+        }
+        .report-value.highlight {
+            color: #667eea;
+            font-weight: 700;
+            font-size: 20px;
+        }
+        .report-section-title {
+            font-size: 15px;
+            color: #fff;
+            font-weight: 600;
+            margin: 20px 0 12px;
+            padding: 8px 12px;
+            background: #667eea;
+            border-radius: 6px;
+        }
+        .report-text {
+            font-size: 14px;
+            color: #444;
+            line-height: 1.9;
+            padding: 0 5px;
+        }
+        .report-ref {
+            background: #f8f9fa;
+            border-left: 3px solid #667eea;
+            padding: 12px 15px;
+            margin: 10px 0;
+            font-size: 13px;
+        }
+        .report-ref-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        .report-ref-link {
+            color: #667eea;
+            word-break: break-all;
+        }
+        .report-quote {
+            background: #fffde7;
+            border-left: 3px solid #ffc107;
+            padding: 12px 15px;
+            margin: 10px 0;
+            font-size: 13px;
+            font-style: italic;
+            color: #555;
+        }
+        .tax-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+            font-size: 14px;
+        }
+        .tax-table th, .tax-table td {
+            border: 1px solid #e0e0e0;
+            padding: 10px;
+            text-align: left;
+        }
+        .tax-table th {
+            background: #f5f5f5;
+            font-weight: 600;
+            color: #333;
+        }
+        .report-warning {
+            background: #fff8e1;
+            border: 1px solid #ffcc80;
+            border-radius: 8px;
+            padding: 12px 15px;
+            margin: 10px 0;
+            font-size: 13px;
+        }
+        .report-warning-title {
+            color: #e65100;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        .report-footer {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+            font-size: 12px;
+            color: #999;
+            text-align: center;
+        }
+        
+        .sample-note {
+            text-align: center;
+            font-size: 13px;
+            color: #888;
+            margin-top: 15px;
+            font-style: italic;
+        }
+        
+        /* 分隔线 */
+        .divider {
+            max-width: 750px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+        .divider-line {
+            border: none;
+            border-top: 2px dashed #ccc;
+        }
+        .divider-text {
+            text-align: center;
+            margin-top: -12px;
+        }
+        .divider-text span {
+            background: #f5f5f5;
+            padding: 0 15px;
+            color: #999;
+            font-size: 14px;
+        }
+        
+        /* 行动区 */
+        .action-section {
+            max-width: 750px;
+            margin: 0 auto;
+            padding: 20px 20px 50px;
+        }
+        .action-title {
+            text-align: center;
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .action-title span {
+            background: #ffeb3b;
+            padding: 2px 8px;
+        }
+        .btn-main {
+            display: block;
+            width: 100%;
+            padding: 22px;
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 16px;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            box-shadow: 0 8px 20px rgba(17, 153, 142, 0.4);
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 3px solid #0d8a7f;
+        }
+        .btn-main:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(17, 153, 142, 0.5);
+        }
+        .btn-main::before {
+            content: "👉 ";
+        }
+        .btn-secondary {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            background: white;
+            color: #667eea;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            border: 2px solid #667eea;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-secondary:hover {
+            background: #f0f0ff;
+        }
+        .btn-secondary::before {
+            content: "💬 ";
+        }
+        .action-note {
+            text-align: center;
+            font-size: 13px;
+            color: #999;
+            margin-top: 15px;
+        }
+        
+        /* 底部 */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 13px;
+            color: #aaa;
+            border-top: 1px solid #e0e0e0;
+            background: white;
+        }
+        
+        /* 微信弹窗 */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            text-align: center;
+            max-width: 320px;
+            margin: 20px;
+        }
+        .modal-content h3 { margin-bottom: 15px; font-size: 18px; }
+        .modal-content .qr-image {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 15px;
+            border-radius: 8px;
+            object-fit: contain;
+        }
+        .modal-content .wechat-id { font-size: 14px; color: #666; }
+        .modal-close {
+            margin-top: 20px;
+            padding: 12px 40px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        /* 统计数字 */
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+        .stat-item {
+            text-align: center;
+        }
+        .stat-num {
+            font-size: 28px;
+            font-weight: 700;
+        }
+        .stat-label {
+            font-size: 13px;
+            opacity: 0.8;
+        }
+        
+        /* 服务流程 */
+        .flow-steps {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin: 15px 0;
+        }
+        .flow-step {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 10px 16px;
+            border-radius: 25px;
+            font-size: 14px;
+        }
+        .step-num {
+            background: white;
+            color: #667eea;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 12px;
+        }
+        .flow-arrow {
+            color: #999;
+            font-size: 18px;
+        }
+        .flow-note {
+            font-size: 13px;
+            color: #4caf50;
+            text-align: center;
+            margin-top: 10px;
+        }
+        
+        /* 团队介绍 */
+        .team-block {
+            background: linear-gradient(135deg, #f8f9ff 0%, #f0f4ff 100%);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #e0e6ff;
+        }
+        .team-info {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+        }
+        .team-avatar {
+            font-size: 48px;
+            background: white;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
+            flex-shrink: 0;
+        }
+        .team-detail {
+            flex: 1;
+        }
+        .team-name {
+            font-size: 20px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 4px;
+        }
+        .team-firm {
+            font-size: 15px;
+            color: #667eea;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .team-desc {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.7;
+        }
+        
+        /* FAQ */
+        .faq-section {
+            max-width: 750px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+        .faq-title {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .faq-title span {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+        .faq-item {
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            overflow: hidden;
+        }
+        .faq-q {
+            padding: 18px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            color: #333;
+            transition: background 0.2s;
+        }
+        .faq-q:hover {
+            background: #f8f9ff;
+        }
+        .faq-arrow {
+            color: #667eea;
+            font-size: 12px;
+            transition: transform 0.3s;
+        }
+        .faq-item.open .faq-arrow {
+            transform: rotate(180deg);
+        }
+        .faq-a {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+            font-size: 14px;
+            color: #555;
+            line-height: 1.8;
+            padding: 0 20px;
+            background: #fafbff;
+            border-top: 1px solid transparent;
+        }
+        .faq-item.open .faq-a {
+            max-height: 300px;
+            padding: 18px 20px;
+            border-top-color: #eee;
+        }
+        
+        /* 交叉营销 */
+        .cross-sell {
+            max-width: 750px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+        .cross-sell-title {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        .cross-sell-cards {
+            display: flex;
+            gap: 15px;
+        }
+        .cross-card {
+            flex: 1;
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            text-decoration: none;
+            color: inherit;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .cross-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+        }
+        .cross-card-icon { font-size: 36px; margin-bottom: 10px; }
+        .cross-card-name { font-size: 15px; font-weight: 600; color: #333; margin-bottom: 5px; }
+        .cross-card-desc { font-size: 13px; color: #888; }
+        
+        /* 赠送提示 */
+        .gift-banner {
+            max-width: 750px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        .gift-banner-inner {
+            background: linear-gradient(135deg, #ff9a56 0%, #ff6b6b 100%);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 15px;
+        }
+        .gift-banner-inner strong {
+            font-size: 16px;
+        }
+        
+        @media (max-width: 500px) {
+            .info-section h1 { font-size: 24px; }
+            .btn-main { font-size: 18px; padding: 18px; }
+            .report-row { flex-direction: column; }
+            .report-label { width: auto; margin-bottom: 3px; }
+            .tax-table { font-size: 12px; }
+            .category-nav { gap: 8px; }
+            .category-btn { padding: 6px 14px; font-size: 13px; }
+            .accordion-header .header-info h3 { font-size: 14px; }
+            .stats-bar { gap: 25px; }
+            .stat-num { font-size: 24px; }
+            .flow-steps { gap: 5px; }
+            .flow-step { padding: 8px 12px; font-size: 12px; }
+            .flow-arrow { display: none; }
+            .team-info { flex-direction: column; align-items: center; text-align: center; }
+            .team-avatar { width: 70px; height: 70px; font-size: 40px; }
+            .cross-sell-cards { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <!-- 展示区 -->
+    <div class="info-section">
+        <div class="logo">📦</div>
+        <h1>HS编码专业归类服务</h1>
+        <p class="tagline">隆天律师事务所 · 专业律师团队 · 10年+跨境合规经验</p>
+        <div class="stats-bar">
+            <div class="stat-item">
+                <div class="stat-num">500+</div>
+                <div class="stat-label">归类案例</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-num">10年+</div>
+                <div class="stat-label">合规经验</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-num">24h</div>
+                <div class="stat-label">快速交付</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="content-section">
+        <div class="content-block">
+            <h2>服务内容</h2>
+            <ul>
+                <li>根据产品描述，提供准确的HS编码建议</li>
+                <li>附详细归类依据（税则条文、品目注释）</li>
+                <li>标注替代编码及排除理由</li>
+                <li>提示归类风险及注意事项</li>
+            </ul>
+        </div>
+        
+        <div class="content-block">
+            <h2>价格</h2>
+            <p><span class="price-text">¥500</span> / 每个编码</p>
+            <p class="price-note">复杂产品或批量需求可议价</p>
+        </div>
+        
+        <div class="content-block">
+            <h2>交付时间</h2>
+            <p>24小时内交付（自然日），急件可加急处理</p>
+        </div>
+        
+        <div class="content-block">
+            <h2>服务流程</h2>
+            <div class="flow-steps">
+                <div class="flow-step">
+                    <span class="step-num">1</span>
+                    <span class="step-text">提交产品信息</span>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">
+                    <span class="step-num">2</span>
+                    <span class="step-text">我们出具报告</span>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">
+                    <span class="step-num">3</span>
+                    <span class="step-text">确认并付款</span>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">
+                    <span class="step-num">4</span>
+                    <span class="step-text">交付完整报告</span>
+                </div>
+            </div>
+            <p class="flow-note">* 先服务后付款，让您看到成果再决定</p>
+        </div>
+        
+        <div class="content-block team-block">
+            <h2>服务团队</h2>
+            <div class="team-info">
+                <div class="team-avatar">⚖️</div>
+                <div class="team-detail">
+                    <div class="team-name">王淼 律师</div>
+                    <div class="team-firm">隆天律师事务所</div>
+                    <div class="team-desc">上海合规团队专业律师，10年+跨境贸易与进出口合规经验，专注海关归类、贸易合规、出口管制等领域。</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- ========== FAQ ========== -->
+    <div class="faq-section">
+        <p class="faq-title"><span>❓ 常见问题</span></p>
+        
+        <div class="faq-item">
+            <div class="faq-q" onclick="toggleFaq(this)">
+                <span>我需要提供什么材料？</span>
+                <span class="faq-arrow">▼</span>
+            </div>
+            <div class="faq-a">
+                最基本的材料即可开始：产品名称、型号、简单描述或图片。材料越详细（如说明书、成分表、用途说明等），我们出结果的速度越快、报告质量越高。
+            </div>
+        </div>
+        
+        <div class="faq-item">
+            <div class="faq-q" onclick="toggleFaq(this)">
+                <span>怎么付款？什么时候付？</span>
+                <span class="faq-arrow">▼</span>
+            </div>
+            <div class="faq-a">
+                <strong>先服务，后付款。</strong>您提交材料后，我们先完成归类报告。您确认报告内容满意后再付款，付款后我们发送完整报告。支持微信、支付宝、对公转账。
+            </div>
+        </div>
+        
+        <div class="faq-item">
+            <div class="faq-q" onclick="toggleFaq(this)">
+                <span>报告是人工做的还是自动生成的？</span>
+                <span class="faq-arrow">▼</span>
+            </div>
+            <div class="faq-a">
+                我们有部分自动化工具辅助提升效率，但<strong>每份报告都经过专业律师人工审核把关</strong>，确保归类依据准确、法规引用正确。
+            </div>
+        </div>
+        
+        <div class="faq-item">
+            <div class="faq-q" onclick="toggleFaq(this)">
+                <span>和报关行、贸促会有什么区别？</span>
+                <span class="faq-arrow">▼</span>
+            </div>
+            <div class="faq-a">
+                报关行通常只给结果，不给详细依据；贸促会官方但周期较长。我们的优势是：<strong>专业律师出具、附完整法规依据、快速交付、性价比高</strong>。报告可作为企业内部合规参考。
+            </div>
+        </div>
+        
+        <div class="faq-item">
+            <div class="faq-q" onclick="toggleFaq(this)">
+                <span>报告能保证海关一定认可吗？</span>
+                <span class="faq-arrow">▼</span>
+            </div>
+            <div class="faq-a">
+                HS编码归类本身存在一定的专业判断空间，最终以海关认定为准，这是行业通行做法。我们的报告提供专业的归类建议和详细依据，帮助您做出合理的申报决策，并在必要时作为归类参考材料。
+            </div>
+        </div>
+        
+        <div class="faq-item">
+            <div class="faq-q" onclick="toggleFaq(this)">
+                <span>批量归类有优惠吗？</span>
+                <span class="faq-arrow">▼</span>
+            </div>
+            <div class="faq-a">
+                有的。5个编码以上可享受批量优惠，具体请联系我们沟通详情。长期合作客户另有优惠方案。
+            </div>
+        </div>
+    </div>
+    
+    <!-- ========== 样例展示 ========== -->
+    <div class="sample-section">
+        <p class="sample-title"><span>📋 交付样例</span></p>
+        
+        <!-- 分类导航 -->
+        <div class="category-nav">
+            <button class="category-btn active" data-cat="all" onclick="filterCategory('all')">全部</button>
+            <button class="category-btn" data-cat="electric" onclick="filterCategory('electric')">电气设备</button>
+            <button class="category-btn" data-cat="pharma" onclick="filterCategory('pharma')">药品</button>
+            <button class="category-btn" data-cat="chemical" onclick="filterCategory('chemical')">化工品</button>
+            <button class="category-btn" data-cat="machine" onclick="filterCategory('machine')">机械</button>
+        </div>
+        
+        <!-- 样例1：电气设备 - 互感器 -->
+        <div class="sample-accordion" data-category="electric">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+                <div class="header-left">
+                    <span class="cat-icon">⚡</span>
+                    <div class="header-info">
+                        <h3>计量型交流互感器</h3>
+                        <p>电气设备 · AKH-0.66G-30I</p>
+                    </div>
+                </div>
+                <span class="hs-badge">8504.31.00</span>
+                <span class="arrow">▼</span>
+            </div>
+            <div class="accordion-content">
+                <div class="sample-input">
+                    <div class="sample-input-label">📥 客户提交的信息</div>
+                    <div class="sample-input-content">
+                        计量型交流互感器-AKH-0.66G-30I 50/5 0.2级 数量20
+                    </div>
+                </div>
+                <div class="sample-arrow">⬇️ 专业归类 + 律师审核 ⬇️</div>
+                <div class="sample-output">
+                    <div class="sample-output-label">📤 交付的归类报告</div>
+                    <div class="sample-output-content">
+                        <div class="report-header">
+                            <h3>HS编码归类建议报告</h3>
+                            <p>报告编号：LPXJ-20241219-001</p>
+                            <div class="report-country">🇨🇳 中国海关税则</div>
+                        </div>
+                        
+                        <div class="report-section-title">一、产品信息</div>
+                        <div class="report-row">
+                            <div class="report-label">产品名称</div>
+                            <div class="report-value">计量型交流互感器</div>
+                        </div>
+                        <div class="report-row">
+                            <div class="report-label">型号规格</div>
+                            <div class="report-value">AKH-0.66G-30I 50/5 0.2级</div>
+                        </div>
+                        <div class="report-row">
+                            <div class="report-label">产品解读</div>
+                            <div class="report-value">AKH-0.66G：额定电压0.66kV，G型外壳；30I：穿孔直径30mm；50/5：一次电流50A，二次电流5A（变比10:1）；0.2级：高精度计量等级</div>
+                        </div>
+                        
+                        <div class="report-section-title">二、归类建议</div>
+                        <div class="report-row">
+                            <div class="report-label">建议HS编码</div>
+                            <div class="report-value highlight">8504.31.00</div>
+                        </div>
+                        <div class="report-row">
+                            <div class="report-label">品目名称</div>
+                            <div class="report-value">额定容量不超过1千伏安的变压器</div>
+                        </div>
+                        
+                        <div class="report-section-title">三、归类依据</div>
+                        <p class="report-text"><strong>1. 归类逻辑</strong></p>
+                        <p class="report-text">
+                            电流互感器（Current Transformer, CT）本质上是一种特殊用途的变压器，其工作原理基于电磁感应，将大电流按比例转换为标准小电流（通常为5A或1A）供计量或保护装置使用。
+                        </p>
+                        
+                        <p class="report-text" style="margin-top:15px;"><strong>2. 税则定位</strong></p>
+                        <div class="report-ref">
+                            <div class="report-ref-title">📚 参考文件</div>
+                            <p>《中华人民共和国进出口税则（2024年）》</p>
+                            <p class="report-ref-link">http://www.customs.gov.cn/customs/302249/302266/index.html</p>
+                        </div>
+                        <p class="report-text">
+                            • 第85章：电机、电气设备及其零件<br>
+                            • 品目8504：变压器、静止式变流器（例如整流器）及电感器
+                        </p>
+                        
+                        <p class="report-text" style="margin-top:15px;"><strong>3. 子目确定</strong></p>
+                        <p class="report-text">
+                            • 8504.31：额定容量不超过1千伏安的变压器<br>
+                            • 8504.32：额定容量超过1千伏安但不超过16千伏安<br>
+                            • 8504.33：额定容量超过16千伏安但不超过500千伏安
+                        </p>
+                        <p class="report-text">
+                            该产品额定电压0.66kV，一次电流50A，视在功率约为33VA（0.033kVA），远小于1kVA，应归入<strong>8504.31</strong>。
+                        </p>
+                        
+                        <p class="report-text" style="margin-top:15px;"><strong>4. 品目注释支持</strong></p>
+                        <div class="report-quote">
+                            "品目8504包括各种变压器，包括电流互感器和电压互感器。互感器作为变压器的一种特殊形式，用于测量或保护目的，归入本品目。"
+                        </div>
+                        
+                        <div class="report-section-title">四、税率信息</div>
+                        <table class="tax-table">
+                            <tr><th>税率类型</th><th>税率</th></tr>
+                            <tr><td>最惠国税率</td><td>0%</td></tr>
+                            <tr><td>普通税率</td><td>30%</td></tr>
+                            <tr><td>增值税</td><td>13%</td></tr>
+                        </table>
+                        
+                        <div class="report-section-title">五、替代编码分析</div>
+                        <table class="tax-table">
+                            <tr><th>编码</th><th>品目名称</th><th>排除理由</th></tr>
+                            <tr><td>9030.33</td><td>带记录装置的电流、电压表</td><td>互感器本身不带显示/记录功能</td></tr>
+                            <tr><td>8504.32</td><td>额定容量超过1千伏安的变压器</td><td>本产品容量远小于1kVA</td></tr>
+                        </table>
+                        
+                        <div class="report-section-title">六、风险提示</div>
+                        <div class="report-warning">
+                            <div class="report-warning-title">⚠️ 归类风险评估：低</div>
+                            <p>电流互感器归入8504.31属于常规归类，海关争议概率较小。</p>
+                        </div>
+                        <p class="report-text">
+                            <strong>建议：</strong><br>
+                            • 保留产品说明书或规格参数表作为归类佐证材料备查<br>
+                            • 如有出口需求，建议确认目的国是否需要当地认证
+                        </p>
+                        
+                        <div class="report-footer">
+                            <p>免责声明：本报告所提供的HS编码归类建议仅供参考，最终归类以进出口地海关审定为准。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 样例2：药品 - 太极鼻窦炎口服液 -->
+        <div class="sample-accordion" data-category="pharma">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+                <div class="header-left">
+                    <span class="cat-icon">💊</span>
+                    <div class="header-info">
+                        <h3>太极鼻窦炎口服液</h3>
+                        <p>中成药 · OTC非处方药</p>
+                    </div>
+                </div>
+                <span class="hs-badge">3004.90.99</span>
+                <span class="arrow">▼</span>
+            </div>
+            <div class="accordion-content">
+                <div class="sample-input">
+                    <div class="sample-input-label">📥 客户提交的信息</div>
+                    <div class="sample-input-content">
+                        太极鼻窦炎口服液，10ml×10支/盒，批号25070409，太极集团重庆涪陵制药厂生产，清热解毒，宣肺通窍，用于急慢性鼻窦炎
+                    </div>
+                </div>
+                <div class="sample-arrow">⬇️ 专业归类 + 律师审核 ⬇️</div>
+                <div class="sample-output">
+                    <div class="sample-output-label">📤 交付的归类报告</div>
+                    <div class="sample-output-content">
+                        <div class="report-header">
+                            <h3>HS编码归类建议报告</h3>
+                            <p>报告编号：LPXJ-20251219-004</p>
+                            <div class="report-country">🇨🇳 中国海关税则</div>
+                        </div>
+                        
+                        <div class="report-section-title">一、产品信息</div>
+                        <div class="report-row">
+                            <div class="report-label">产品名称</div>
+                            <div class="report-value">太极鼻窦炎口服液</div>
+                        </div>
+                        <div class="report-row">
+                            <div class="report-label">规格</div>
+                            <div class="report-value">10ml×10支/盒</div>
+                        </div>
+                        <div class="report-row">
+                            <div class="report-label">产品批号</div>
+                            <div class="report-value">25070409</div>
+                        </div>
+                        <div class="report-row">
+                            <div class="report-label">产品类型</div>
+                            <div class="report-value">中成药口服制剂（OTC非处方药）</div>
+                        </div>
+                        <div class="report-row">
+                            <div class="report-label">生产企业</div>
+                            <div class="report-value">太极集团重庆涪陵制药厂有限公司</div>
+                        </div>
+                        <div class="report-row">
+                            <div class="report-label">产品功效</div>
+                            <div class="report-value">清热解毒，宣肺通窍。用于急、慢性鼻窦炎属肺经风热证者。</div>
+                        </div>
+                        
+                        <div class="report-section-title">二、归类建议</div>
+                        <div class="report-row">
+                            <div class="report-label">建议HS编码</div>
+                            <div class="report-value highlight">3004.90.99</div>
+                        </div>
+                        <div class="report-row">
+                            <div class="report-label">品目名称</div>
+                            <div class="report-value">其他已配定剂量或零售包装的药品</div>
+                        </div>
+                        
+                        <div class="report-section-title">三、归类依据</div>
+                        <p class="report-text"><strong>1. 归类逻辑</strong></p>
+                        <p class="report-text">
+                            该产品为太极集团生产的中成药口服制剂，由多种中药材配制而成，已配成固定剂量（10ml/支），采用零售包装形式（一盒十支）。产品具有明确的治疗功效（治疗鼻窦炎），属于已配定剂量的零售包装药品。
+                        </p>
+                        
+                        <p class="report-text" style="margin-top:15px;"><strong>2. 税则定位</strong></p>
+                        <div class="report-ref">
+                            <div class="report-ref-title">📚 参考文件</div>
+                            <p>《中华人民共和国进出口税则（2024年版）》</p>
+                            <p class="report-ref-link">http://www.customs.gov.cn/customs/302249/302266/index.html</p>
+                        </div>
+                        <p class="report-text">
+                            • 第30章：药品<br>
+                            • 品目3004：已配定剂量（包括制成零售包装）或零售包装的治病或防病用药品<br>
+                            • 子目3004.90：其他 → 3004.90.99：其他
+                        </p>
+                        
+                        <p class="report-text" style="margin-top:15px;"><strong>3. 子目确定过程</strong></p>
+                        <p class="report-text">品目3004项下子目结构：</p>
+                        <p class="report-text">
+                            • 3004.10 - 含有青霉素或链霉素的药品<br>
+                            • 3004.20 - 含有其他抗菌素的药品<br>
+                            • 3004.31~3004.49 - 含有激素或胰岛素的药品<br>
+                            • 3004.50 - 含有维生素的药品<br>
+                            • 3004.90 - 其他（本品归入此子目）
+                        </p>
+                        <p class="report-text">
+                            该产品为中成药制剂，主要成分为辛夷、黄芪、苍耳子、白芷、川芎等中药材，不含抗菌素、激素、胰岛素或维生素等西药成分，应归入<strong>3004.90.99</strong>。
+                        </p>
+                        
+                        <p class="report-text" style="margin-top:15px;"><strong>4. 品目注释支持</strong></p>
+                        <div class="report-ref">
+                            <div class="report-ref-title">📚 参考文件</div>
+                            <p>《进出口税则商品及品目注释》（海关总署2024年版）</p>
+                            <p class="report-ref-link">http://www.customs.gov.cn/customs/302249/302266/302267/index.html</p>
+                        </div>
+                        <div class="report-quote">
+                            "品目3004包括已配定剂量或零售包装的药品，包括中药制剂。中药制剂是指以中药材为原料，按照一定工艺加工制成的具有一定剂型和规格的药品。"
+                        </div>
+                        
+                        <div class="report-section-title">四、税率信息</div>
+                        <table class="tax-table">
+                            <tr><th>税率类型</th><th>税率</th></tr>
+                            <tr><td>最惠国税率</td><td>0%</td></tr>
+                            <tr><td>普通税率</td><td>20%</td></tr>
+                            <tr><td>增值税</td><td>13%</td></tr>
+                        </table>
+                        <div class="report-ref">
+                            <div class="report-ref-title">📚 税率查询来源</div>
+                            <p class="report-ref-link">http://www.customs.gov.cn/customs/302249/302266/302268/index.html</p>
+                        </div>
+                        
+                        <div class="report-section-title">五、替代编码分析</div>
+                        <table class="tax-table">
+                            <tr><th>编码</th><th>品目名称</th><th>排除理由</th></tr>
+                            <tr><td>3003.90</td><td>其他未配定剂量的药品</td><td>本品已配定剂量（10ml/支），不适用</td></tr>
+                            <tr><td>2106.90</td><td>其他食品</td><td>本品为药品而非保健食品，有药准字批号</td></tr>
+                            <tr><td>1302.19</td><td>其他植物液汁及浸膏</td><td>本品为配制药品，非原料状态</td></tr>
+                        </table>
+                        
+                        <div class="report-section-title">六、风险提示</div>
+                        <div class="report-warning">
+                            <div class="report-warning-title">⚠️ 归类风险评估：低</div>
+                            <p>中成药口服制剂归入3004.90.99属于常规归类，海关争议概率较小。</p>
+                        </div>
+                        <p class="report-text">
+                            <strong>出口注意事项：</strong><br>
+                            • 药品出口需提供国家药品监督管理局颁发的《药品出口销售证明》<br>
+                            • 部分国家/地区对中成药进口有特殊限制或需要额外认证<br>
+                            • 建议提前确认目的国的药品进口法规要求<br>
+                            • 保留产品批件、说明书作为归类佐证材料备查
+                        </p>
+                        
+                        <div class="report-footer">
+                            <p>免责声明：本报告所提供的HS编码归类建议仅供参考，最终归类以进出口地海关审定为准。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 样例3：化工品 -->
+        <div class="sample-accordion" data-category="chemical">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+                <div class="header-left">
+                    <span class="cat-icon">🧪</span>
+                    <div class="header-info">
+                        <h3>工业级氢氧化钠</h3>
+                        <p>化工原料 · 片碱99%</p>
+                    </div>
+                </div>
+                <span class="hs-badge">2815.11.00</span>
+                <span class="arrow">▼</span>
+            </div>
+            <div class="accordion-content">
+                <div class="sample-input">
+                    <div class="sample-input-label">📥 客户提交的信息</div>
+                    <div class="sample-input-content">
+                        工业级氢氧化钠（片碱），纯度99%，25kg/袋，用于污水处理
+                    </div>
+                </div>
+                <div class="sample-arrow">⬇️ 专业归类 + 律师审核 ⬇️</div>
+                <div class="sample-output">
+                    <div class="sample-output-label">📤 交付的归类报告</div>
+                    <div class="sample-output-content">
+                        <div class="report-header">
+                            <h3>HS编码归类建议报告</h3>
+                            <p>报告编号：LPXJ-20251219-005</p>
+                            <div class="report-country">🇨🇳 中国海关税则</div>
+                        </div>
+                        
+                        <div class="report-section-title">一、产品信息</div>
+                        <div class="report-row">
+                            <div class="report-label">产品名称</div>
+                            <div class="report-value">工业级氢氧化钠（片碱）</div>
+                        </div>
+                        <div class="report-row">
+                            <div class="report-label">规格</div>
+                            <div class="report-value">纯度99%，25kg/袋</div>
+                        </div>
+                        <div class="report-row">
+                            <div class="report-label">用途</div>
+                            <div class="report-value">污水处理、化工生产等工业用途</div>
+                        </div>
+                        
+                        <div class="report-section-title">二、归类建议</div>
+                        <div class="report-row">
+                            <div class="report-label">建议HS编码</div>
+                            <div class="report-value highlight">2815.11.00</div>
+                        </div>
+                        <div class="report-row">
+                            <div class="report-label">品目名称</div>
+                            <div class="report-value">固体氢氧化钠（烧碱）</div>
+                        </div>
+                        
+                        <div class="report-section-title">三、归类依据</div>
+                        <p class="report-text"><strong>归类逻辑</strong></p>
+                        <p class="report-text">
+                            氢氧化钠（NaOH）是典型的无机碱，以固体片状形式存在。根据税则第28章注释，无机碱及其化合物归入本章。氢氧化钠固体归入2815.11，液体（水溶液）归入2815.12。
+                        </p>
+                        
+                        <div class="report-section-title">四、税率信息</div>
+                        <table class="tax-table">
+                            <tr><th>税率类型</th><th>税率</th></tr>
+                            <tr><td>最惠国税率</td><td>5.5%</td></tr>
+                            <tr><td>普通税率</td><td>30%</td></tr>
+                            <tr><td>增值税</td><td>13%</td></tr>
+                        </table>
+                        
+                        <div class="report-section-title">五、风险提示</div>
+                        <div class="report-warning">
+                            <div class="report-warning-title">⚠️ 归类风险评估：低</div>
+                            <p>氢氧化钠属于化学成分明确的单一化合物，归类无争议。</p>
+                        </div>
+                        <p class="report-text">
+                            <strong>注意事项：</strong><br>
+                            • 氢氧化钠属于危险化学品，出口需办理危化品相关手续<br>
+                            • 运输需符合危险货物包装规范
+                        </p>
+                        
+                        <div class="report-footer">
+                            <p>免责声明：本报告仅供参考，最终归类以海关审定为准。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 样例4：机械 -->
+        <div class="sample-accordion" data-category="machine">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+                <div class="header-left">
+                    <span class="cat-icon">⚙️</span>
+                    <div class="header-info">
+                        <h3>数控车床主轴</h3>
+                        <p>机械零件 · BT40刀柄接口</p>
+                    </div>
+                </div>
+                <span class="hs-badge">8466.10.00</span>
+                <span class="arrow">▼</span>
+            </div>
+            <div class="accordion-content">
+                <div class="sample-input">
+                    <div class="sample-input-label">📥 客户提交的信息</div>
+                    <div class="sample-input-content">
+                        数控车床用主轴，BT40刀柄接口，最高转速8000rpm，用于加工中心
+                    </div>
+                </div>
+                <div class="sample-arrow">⬇️ 专业归类 + 律师审核 ⬇️</div>
+                <div class="sample-output">
+                    <div class="sample-output-label">📤 交付的归类报告</div>
+                    <div class="sample-output-content">
+                        <div class="report-header">
+                            <h3>HS编码归类建议报告</h3>
+                            <p>报告编号：LPXJ-20251219-006</p>
+                            <div class="report-country">🇨🇳 中国海关税则</div>
+                        </div>
+                        
+                        <div class="report-section-title">一、产品信息</div>
+                        <div class="report-row">
+                            <div class="report-label">产品名称</div>
+                            <div class="report-value">数控车床主轴</div>
+                        </div>
+                        <div class="report-row">
+                            <div class="report-label">规格</div>
+                            <div class="report-value">BT40刀柄接口，最高转速8000rpm</div>
+                        </div>
+                        <div class="report-row">
+                            <div class="report-label">用途</div>
+                            <div class="report-value">数控加工中心专用零件</div>
+                        </div>
+                        
+                        <div class="report-section-title">二、归类建议</div>
+                        <div class="report-row">
+                            <div class="report-label">建议HS编码</div>
+                            <div class="report-value highlight">8466.10.00</div>
+                        </div>
+                        <div class="report-row">
+                            <div class="report-label">品目名称</div>
+                            <div class="report-value">工具夹具及自启板牙切头</div>
+                        </div>
+                        
+                        <div class="report-section-title">三、归类依据</div>
+                        <p class="report-text"><strong>归类逻辑</strong></p>
+                        <p class="report-text">
+                            主轴是机床的核心功能部件，用于夹持刀具或工件。根据税则第84章章注，专用于或主要用于品目84.56至84.65所列机器的零件，归入品目84.66。主轴作为刀具夹持装置，归入8466.10。
+                        </p>
+                        
+                        <div class="report-section-title">四、税率信息</div>
+                        <table class="tax-table">
+                            <tr><th>税率类型</th><th>税率</th></tr>
+                            <tr><td>最惠国税率</td><td>8%</td></tr>
+                            <tr><td>普通税率</td><td>20%</td></tr>
+                            <tr><td>增值税</td><td>13%</td></tr>
+                        </table>
+                        
+                        <div class="report-section-title">五、风险提示</div>
+                        <div class="report-warning">
+                            <div class="report-warning-title">⚠️ 归类风险评估：中</div>
+                            <p>机床零件归类需注意区分专用零件与通用零件，建议提供安装说明或技术资料。</p>
+                        </div>
+                        
+                        <div class="report-footer">
+                            <p>免责声明：本报告仅供参考，最终归类以海关审定为准。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <p class="sample-note">💡 点击任意样例卡片展开查看完整报告 · 以上均为真实交付样例（已脱敏）</p>
+    </div>
+    
+    <!-- 交叉营销 -->
+    <div class="cross-sell">
+        <p class="cross-sell-title">🎁 相关服务</p>
+        <div class="cross-sell-cards">
+            <a href="eccn-service.html" class="cross-card">
+                <div class="cross-card-icon">🇺🇸</div>
+                <div class="cross-card-name">ECCN分类</div>
+                <div class="cross-card-desc">美国出口管制分类</div>
+            </a>
+            <a href="risk-check-service.html" class="cross-card">
+                <div class="cross-card-icon">🔍</div>
+                <div class="cross-card-name">企业合规风险检索</div>
+                <div class="cross-card-desc">制裁清单 · 涉军 · 涉疆</div>
+            </a>
+        </div>
+    </div>
+    
+    <!-- 赠送提示 -->
+    <div class="gift-banner">
+        <div class="gift-banner-inner">
+            🎁 <strong>下单即赠</strong>：购买本服务，免费体验「ECCN分类」或「企业风险检索」服务一次！
+        </div>
+    </div>
+    
+    <!-- 分隔线 -->
+    <div class="divider">
+        <hr class="divider-line">
+        <div class="divider-text"><span>↓ 点击下方按钮开始 ↓</span></div>
+    </div>
+    
+    <!-- 行动区 -->
+    <div class="action-section">
+        <p class="action-title"><span>请选择联系方式</span></p>
+        
+        <a href="https://qi0hecoa.jsjform.com/f/ot1UfB" class="btn-main" target="_blank">
+            立即提交产品信息
+        </a>
+        
+        <div class="btn-secondary" onclick="showWechat()">
+            微信咨询（需加好友）
+        </div>
+        
+        <p class="action-note">提交表单后24小时内联系您</p>
+    </div>
+    
+    <div class="footer">
+        <p>隆天律师事务所 · 服务时间：工作日 9:00-21:00</p>
+    </div>
+    
+    <!-- 微信弹窗 -->
+    <div class="modal-overlay" id="wechatModal" onclick="hideWechat()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <h3>微信扫码添加</h3>
+            <img class="qr-image" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'%3E%3Crect fill='%23f0f0f0' width='200' height='200'/%3E%3Ctext x='100' y='100' text-anchor='middle' dy='.3em' fill='%23999' font-size='14'%3E微信二维码%3C/text%3E%3C/svg%3E" alt="微信二维码">
+            <p class="wechat-id">微信号：wolailahhaa</p>
+            <p style="font-size: 13px; color: #999; margin-top: 10px;">添加时请备注"HS归类"</p>
+            <button class="modal-close" onclick="hideWechat()">关闭</button>
+        </div>
+    </div>
+    
+    <script>
+        // 折叠面板切换
+        function toggleAccordion(header) {
+            const content = header.nextElementSibling;
+            const isActive = header.classList.contains('active');
+            
+            // 关闭所有其他面板
+            document.querySelectorAll('.accordion-header.active').forEach(h => {
+                if (h !== header) {
+                    h.classList.remove('active');
+                    h.nextElementSibling.classList.remove('show');
+                }
+            });
+            
+            // 切换当前面板
+            if (isActive) {
+                header.classList.remove('active');
+                content.classList.remove('show');
+            } else {
+                header.classList.add('active');
+                content.classList.add('show');
+                // 滚动到视图
+                setTimeout(() => {
+                    header.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 100);
+            }
+        }
+        
+        // 分类筛选
+        function filterCategory(cat) {
+            // 更新按钮状态
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.cat === cat) btn.classList.add('active');
+            });
+            
+            // 筛选卡片
+            document.querySelectorAll('.sample-accordion').forEach(card => {
+                if (cat === 'all' || card.dataset.category === cat) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+            
+            // 关闭所有展开的面板
+            document.querySelectorAll('.accordion-header.active').forEach(h => {
+                h.classList.remove('active');
+                h.nextElementSibling.classList.remove('show');
+            });
+        }
+        
+        // 微信弹窗
+        function showWechat() { 
+            document.getElementById('wechatModal').style.display = 'flex'; 
+        }
+        function hideWechat() { 
+            document.getElementById('wechatModal').style.display = 'none'; 
+        }
+        
+        // FAQ切换
+        function toggleFaq(q) {
+            const item = q.parentElement;
+            const wasOpen = item.classList.contains('open');
+            
+            // 关闭所有
+            document.querySelectorAll('.faq-item.open').forEach(i => {
+                i.classList.remove('open');
+            });
+            
+            // 如果之前未打开，则打开当前项
+            if (!wasOpen) {
+                item.classList.add('open');
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ECCN分类服务 | 美国出口管制 | 隆天律师事务所</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+            line-height: 1.8;
+        }
+        
+        /* 顶部展示区 - 蓝色系 */
+        .info-section {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 50px 20px 40px;
+            text-align: center;
+        }
+        .info-section .logo { font-size: 56px; margin-bottom: 15px; }
+        .info-section h1 { font-size: 28px; margin-bottom: 10px; }
+        .info-section .tagline { font-size: 16px; opacity: 0.9; }
+        .us-flag { 
+            display: inline-block;
+            background: #fff;
+            color: #1e3c72;
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-size: 14px;
+            margin-top: 15px;
+        }
+        
+        /* 统计数字 */
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+        .stat-item { text-align: center; }
+        .stat-num { font-size: 28px; font-weight: 700; }
+        .stat-label { font-size: 13px; opacity: 0.8; }
+        
+        /* 内容区 */
+        .content-section {
+            max-width: 750px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+        .content-block { margin-bottom: 25px; }
+        .content-block h2 {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 12px;
+            border-left: 4px solid #1e3c72;
+            padding-left: 12px;
+        }
+        .content-block p, .content-block li {
+            font-size: 15px;
+            color: #555;
+            line-height: 1.9;
+        }
+        .content-block ul { list-style: none; padding-left: 0; }
+        .content-block li::before { content: "✓ "; color: #4caf50; }
+        .price-text { font-size: 32px; font-weight: 700; color: #1e3c72; }
+        .price-note { font-size: 14px; color: #888; }
+        
+        /* 什么是ECCN说明框 */
+        .explainer-box {
+            background: linear-gradient(135deg, #e8f4fd 0%, #d6eaf8 100%);
+            border: 1px solid #aed6f1;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+        .explainer-box h3 {
+            font-size: 15px;
+            color: #1e3c72;
+            margin-bottom: 10px;
+        }
+        .explainer-box p {
+            font-size: 14px;
+            color: #555;
+            line-height: 1.8;
+        }
+        .explainer-box .highlight {
+            background: #fff;
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #c0392b;
+            font-weight: 600;
+        }
+        
+        /* 服务流程 */
+        .flow-steps {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin: 15px 0;
+        }
+        .flow-step {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 10px 16px;
+            border-radius: 25px;
+            font-size: 14px;
+        }
+        .step-num {
+            background: white;
+            color: #1e3c72;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 12px;
+        }
+        .flow-arrow { color: #999; font-size: 18px; }
+        .flow-note {
+            font-size: 13px;
+            color: #4caf50;
+            text-align: center;
+            margin-top: 10px;
+        }
+        
+        /* 团队介绍 */
+        .team-block {
+            background: linear-gradient(135deg, #f0f4f8 0%, #e8eef5 100%);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #d0dce8;
+        }
+        .team-info { display: flex; gap: 20px; align-items: flex-start; }
+        .team-avatar {
+            font-size: 48px;
+            background: white;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(30, 60, 114, 0.2);
+            flex-shrink: 0;
+        }
+        .team-detail { flex: 1; }
+        .team-name { font-size: 20px; font-weight: 700; color: #333; margin-bottom: 4px; }
+        .team-firm { font-size: 15px; color: #1e3c72; font-weight: 600; margin-bottom: 10px; }
+        .team-desc { font-size: 14px; color: #666; line-height: 1.7; }
+        
+        /* ========== 样例展示区 ========== */
+        .sample-section {
+            max-width: 750px;
+            margin: 0 auto;
+            padding: 0 20px 30px;
+        }
+        .sample-title {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .sample-title span {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+        
+        /* 折叠面板 */
+        .sample-accordion {
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+        .accordion-header {
+            padding: 18px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .accordion-header:hover { background: #f8f9fa; }
+        .header-left { display: flex; align-items: center; gap: 15px; flex: 1; }
+        .cat-icon {
+            font-size: 28px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #e8f4fd 0%, #d6eaf8 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .header-info h3 { font-size: 16px; color: #333; margin-bottom: 3px; }
+        .header-info p { font-size: 13px; color: #888; }
+        .eccn-badge {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-right: 10px;
+        }
+        .arrow {
+            color: #1e3c72;
+            font-size: 12px;
+            transition: transform 0.3s;
+        }
+        .accordion-header.active .arrow { transform: rotate(180deg); }
+        
+        /* 折叠内容 */
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+        }
+        .accordion-content.show { max-height: 3000px; }
+        
+        /* 输入输出样式 */
+        .sample-input, .sample-output { padding: 0 20px 20px; }
+        .sample-input-label, .sample-output-label {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #666;
+        }
+        .sample-input-content {
+            background: #f8f9fa;
+            border: 1px dashed #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            font-size: 14px;
+            color: #555;
+        }
+        .sample-arrow {
+            text-align: center;
+            padding: 15px;
+            color: #1e3c72;
+            font-size: 14px;
+        }
+        .sample-output-content {
+            background: linear-gradient(135deg, #f8fbff 0%, #f0f7ff 100%);
+            border: 2px solid #1e3c72;
+            border-radius: 12px;
+            padding: 25px;
+        }
+        
+        /* 报告样式 */
+        .report-header {
+            text-align: center;
+            border-bottom: 2px solid #1e3c72;
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+        .report-header h3 { font-size: 20px; color: #1e3c72; margin-bottom: 8px; }
+        .report-header p { font-size: 13px; color: #888; }
+        .report-country {
+            display: inline-block;
+            background: #1e3c72;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            margin-top: 10px;
+        }
+        .report-section-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #1e3c72;
+            margin: 20px 0 12px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .report-row {
+            display: flex;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        .report-label {
+            width: 100px;
+            color: #888;
+            flex-shrink: 0;
+        }
+        .report-value { color: #333; flex: 1; }
+        .report-value.highlight {
+            color: #1e3c72;
+            font-weight: 700;
+            font-size: 18px;
+        }
+        
+        /* ECCN分解表 */
+        .eccn-breakdown {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+        }
+        .eccn-breakdown-title {
+            font-size: 13px;
+            color: #888;
+            margin-bottom: 10px;
+        }
+        .eccn-parts {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .eccn-part {
+            text-align: center;
+        }
+        .eccn-part-value {
+            background: #1e3c72;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 20px;
+            font-weight: 700;
+            font-family: monospace;
+        }
+        .eccn-part-label {
+            font-size: 11px;
+            color: #666;
+            margin-top: 5px;
+        }
+        .eccn-part-sep {
+            font-size: 24px;
+            color: #ccc;
+        }
+        
+        /* 管控原因标签 */
+        .control-reasons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin: 10px 0;
+        }
+        .control-tag {
+            background: #fff3e0;
+            color: #e65100;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            border: 1px solid #ffcc80;
+        }
+        .control-tag.primary {
+            background: #ffebee;
+            color: #c62828;
+            border-color: #ef9a9a;
+        }
+        
+        /* 许可要求表格 */
+        .license-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+            font-size: 13px;
+        }
+        .license-table th, .license-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        .license-table th {
+            background: #f5f5f5;
+            font-weight: 600;
+            color: #333;
+        }
+        .license-table .yes { color: #c62828; font-weight: 600; }
+        .license-table .no { color: #2e7d32; }
+        .license-table .exception { color: #1565c0; font-size: 12px; }
+        
+        /* 替代编码 */
+        .alt-codes {
+            background: #fafafa;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+        }
+        .alt-code-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .alt-code-item:last-child { border-bottom: none; }
+        .alt-code-num {
+            background: #e0e0e0;
+            color: #555;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-family: monospace;
+        }
+        .alt-code-reason { font-size: 13px; color: #666; }
+        
+        .report-warning {
+            background: #fff8e1;
+            border-left: 4px solid #ff9800;
+            padding: 15px;
+            border-radius: 0 8px 8px 0;
+            margin: 15px 0;
+        }
+        .report-warning-title { font-weight: 700; color: #e65100; margin-bottom: 8px; }
+        .report-warning p { font-size: 13px; color: #666; margin: 0; }
+        
+        .report-footer {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #ddd;
+            font-size: 12px;
+            color: #999;
+            text-align: center;
+        }
+        
+        .sample-note {
+            text-align: center;
+            font-size: 13px;
+            color: #888;
+            margin-top: 20px;
+        }
+        
+        /* FAQ */
+        .faq-section {
+            max-width: 750px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+        .faq-title {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .faq-title span {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+        .faq-item {
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            overflow: hidden;
+        }
+        .faq-q {
+            padding: 18px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            color: #333;
+            transition: background 0.2s;
+        }
+        .faq-q:hover { background: #f8f9fa; }
+        .faq-arrow {
+            color: #1e3c72;
+            font-size: 12px;
+            transition: transform 0.3s;
+        }
+        .faq-item.open .faq-arrow { transform: rotate(180deg); }
+        .faq-a {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+            font-size: 14px;
+            color: #555;
+            line-height: 1.8;
+            padding: 0 20px;
+            background: #f8fbff;
+            border-top: 1px solid transparent;
+        }
+        .faq-item.open .faq-a {
+            max-height: 300px;
+            padding: 18px 20px;
+            border-top-color: #eee;
+        }
+        
+        /* 交叉营销 */
+        .cross-sell {
+            max-width: 750px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+        .cross-sell-title {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        .cross-sell-cards {
+            display: flex;
+            gap: 15px;
+        }
+        .cross-card {
+            flex: 1;
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            text-decoration: none;
+            color: inherit;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .cross-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+        }
+        .cross-card-icon { font-size: 36px; margin-bottom: 10px; }
+        .cross-card-name { font-size: 15px; font-weight: 600; color: #333; margin-bottom: 5px; }
+        .cross-card-desc { font-size: 13px; color: #888; }
+        
+        /* 分隔线 */
+        .divider {
+            max-width: 750px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+        }
+        .divider-line {
+            border: none;
+            border-top: 1px solid #e0e0e0;
+        }
+        .divider-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #f5f5f5;
+            padding: 0 15px;
+        }
+        .divider-text span {
+            font-size: 14px;
+            color: #999;
+        }
+        
+        /* 行动区 */
+        .action-section {
+            max-width: 750px;
+            margin: 0 auto;
+            padding: 20px 20px 50px;
+        }
+        .action-title {
+            text-align: center;
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .action-title span { background: #ffeb3b; padding: 2px 8px; }
+        .btn-main {
+            display: block;
+            width: 100%;
+            padding: 22px;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 16px;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            box-shadow: 0 8px 20px rgba(30, 60, 114, 0.4);
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 3px solid #15294f;
+        }
+        .btn-main:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(30, 60, 114, 0.5);
+        }
+        .btn-main::before { content: "👉 "; }
+        .btn-secondary {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            background: white;
+            color: #1e3c72;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            border: 2px solid #1e3c72;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-secondary:hover { background: #f0f4f8; }
+        .btn-secondary::before { content: "💬 "; }
+        .action-note {
+            text-align: center;
+            font-size: 13px;
+            color: #999;
+            margin-top: 15px;
+        }
+        
+        /* 底部 */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 13px;
+            color: #aaa;
+            border-top: 1px solid #e0e0e0;
+            background: white;
+        }
+        
+        /* 微信弹窗 */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            text-align: center;
+            max-width: 320px;
+            margin: 20px;
+        }
+        .modal-content h3 { margin-bottom: 15px; font-size: 18px; }
+        .modal-content .wechat-id { font-size: 14px; color: #666; }
+        .modal-close {
+            margin-top: 20px;
+            padding: 12px 40px;
+            background: #1e3c72;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        /* 赠送提示 */
+        .gift-banner {
+            max-width: 750px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        .gift-banner-inner {
+            background: linear-gradient(135deg, #ff9a56 0%, #ff6b6b 100%);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 15px;
+        }
+        .gift-banner-inner strong {
+            font-size: 16px;
+        }
+        
+        @media (max-width: 500px) {
+            .info-section h1 { font-size: 24px; }
+            .btn-main { font-size: 18px; padding: 18px; }
+            .report-row { flex-direction: column; }
+            .report-label { width: auto; margin-bottom: 3px; }
+            .license-table { font-size: 11px; }
+            .license-table th, .license-table td { padding: 6px; }
+            .stats-bar { gap: 25px; }
+            .stat-num { font-size: 24px; }
+            .flow-steps { gap: 5px; }
+            .flow-step { padding: 8px 12px; font-size: 12px; }
+            .flow-arrow { display: none; }
+            .team-info { flex-direction: column; align-items: center; text-align: center; }
+            .team-avatar { width: 70px; height: 70px; font-size: 40px; }
+            .cross-sell-cards { flex-direction: column; }
+            .eccn-parts { justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+    <!-- 展示区 -->
+    <div class="info-section">
+        <div class="logo">🇺🇸</div>
+        <h1>ECCN分类服务</h1>
+        <p class="tagline">美国出口管制 · EAR管辖判定 · 专业律师团队</p>
+        <div class="us-flag">适用：美国出口管理条例 (EAR)</div>
+        <div class="stats-bar">
+            <div class="stat-item">
+                <div class="stat-num">200+</div>
+                <div class="stat-label">分类案例</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-num">10年+</div>
+                <div class="stat-label">合规经验</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-num">24h</div>
+                <div class="stat-label">快速交付</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="content-section">
+        <div class="explainer-box">
+            <h3>📘 什么是ECCN？为什么需要分类？</h3>
+            <p>ECCN（出口管制分类编号）是美国商务部BIS用于识别两用物项出口管制级别的编号。如果您的产品<span class="highlight">受EAR管辖</span>，出口到特定国家可能需要申请许可证。错误分类可能导致：违规处罚、货物扣押、甚至刑事责任。</p>
+        </div>
+        
+        <div class="content-block">
+            <h2>服务内容</h2>
+            <ul>
+                <li>判断产品是否受EAR管辖</li>
+                <li>确定准确的ECCN编号或EAR99状态</li>
+                <li>分析管控原因（NS, MT, NP, AT等）</li>
+                <li>列出主要目的国的许可要求</li>
+                <li>提供分类依据和法规引用</li>
+            </ul>
+        </div>
+        
+        <div class="content-block">
+            <h2>价格</h2>
+            <p><span class="price-text">¥500</span> / 每个产品</p>
+            <p class="price-note">复杂产品或批量需求可议价</p>
+        </div>
+        
+        <div class="content-block">
+            <h2>交付时间</h2>
+            <p>24小时内交付（自然日），急件可加急处理</p>
+        </div>
+        
+        <div class="content-block">
+            <h2>服务流程</h2>
+            <div class="flow-steps">
+                <div class="flow-step">
+                    <span class="step-num">1</span>
+                    <span class="step-text">提交产品信息</span>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">
+                    <span class="step-num">2</span>
+                    <span class="step-text">我们出具报告</span>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">
+                    <span class="step-num">3</span>
+                    <span class="step-text">确认并付款</span>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">
+                    <span class="step-num">4</span>
+                    <span class="step-text">交付完整报告</span>
+                </div>
+            </div>
+            <p class="flow-note">* 先服务后付款，让您看到成果再决定</p>
+        </div>
+        
+        <div class="content-block team-block">
+            <h2>服务团队</h2>
+            <div class="team-info">
+                <div class="team-avatar">⚖️</div>
+                <div class="team-detail">
+                    <div class="team-name">王淼 律师</div>
+                    <div class="team-firm">隆天律师事务所</div>
+                    <div class="team-desc">上海合规团队专业律师，10年+跨境贸易与进出口合规经验，专注出口管制、贸易制裁、海关合规等领域。</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- ========== 样例展示 ========== -->
+    <div class="sample-section">
+        <p class="sample-title"><span>📋 交付样例</span></p>
+        
+        <!-- 样例1：半导体设备 -->
+        <div class="sample-accordion">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+                <div class="header-left">
+                    <span class="cat-icon">🔬</span>
+                    <div class="header-info">
+                        <h3>半导体光刻设备</h3>
+                        <p>制造设备 · DUV光刻机</p>
+                    </div>
+                </div>
+                <span class="eccn-badge">3B001.f</span>
+                <span class="arrow">▼</span>
+            </div>
+            <div class="accordion-content">
+                <div class="sample-input">
+                    <div class="sample-input-label">📥 客户提交的信息</div>
+                    <div class="sample-input-content">
+                        深紫外光刻设备，波长193nm，分辨率≤45nm，用于集成电路制造
+                    </div>
+                </div>
+                <div class="sample-arrow">⬇️ 专业分析 + 律师审核 ⬇️</div>
+                <div class="sample-output">
+                    <div class="sample-output-label">📤 交付的分类报告</div>
+                    <div class="sample-output-content">
+                        <div class="report-header">
+                            <h3>ECCN分类建议报告</h3>
+                            <p>报告编号：ECCN-20241219-001</p>
+                            <div class="report-country">🇺🇸 美国出口管理条例 (EAR)</div>
+                        </div>
+                        
+                        <div class="report-section-title">一、产品信息</div>
+                        <div class="report-row">
+                            <div class="report-label">产品名称</div>
+                            <div class="report-value">深紫外(DUV)光刻设备</div>
+                        </div>
+                        <div class="report-row">
+                            <div class="report-label">技术参数</div>
+                            <div class="report-value">波长193nm (ArF)，分辨率≤45nm</div>
+                        </div>
+                        <div class="report-row">
+                            <div class="report-label">用途</div>
+                            <div class="report-value">集成电路/半导体器件制造</div>
+                        </div>
+                        
+                        <div class="report-section-title">二、EAR管辖判定</div>
+                        <div class="report-row">
+                            <div class="report-label">是否受EAR管辖</div>
+                            <div class="report-value highlight">是</div>
+                        </div>
+                        <div class="report-row">
+                            <div class="report-label">管辖依据</div>
+                            <div class="report-value">美国原产设备；属于CCL管控物项</div>
+                        </div>
+                        
+                        <div class="report-section-title">三、ECCN分类建议</div>
+                        <div class="report-row">
+                            <div class="report-label">建议ECCN</div>
+                            <div class="report-value highlight">3B001.f</div>
+                        </div>
+                        
+                        <div class="eccn-breakdown">
+                            <div class="eccn-breakdown-title">编号结构解析</div>
+                            <div class="eccn-parts">
+                                <div class="eccn-part">
+                                    <div class="eccn-part-value">3</div>
+                                    <div class="eccn-part-label">类别：电子</div>
+                                </div>
+                                <div class="eccn-part-sep">-</div>
+                                <div class="eccn-part">
+                                    <div class="eccn-part-value">B</div>
+                                    <div class="eccn-part-label">产品组：设备</div>
+                                </div>
+                                <div class="eccn-part-sep">-</div>
+                                <div class="eccn-part">
+                                    <div class="eccn-part-value">001</div>
+                                    <div class="eccn-part-label">序号</div>
+                                </div>
+                                <div class="eccn-part-sep">.</div>
+                                <div class="eccn-part">
+                                    <div class="eccn-part-value">f</div>
+                                    <div class="eccn-part-label">子项</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="report-row">
+                            <div class="report-label">管控原因</div>
+                            <div class="report-value">
+                                <div class="control-reasons">
+                                    <span class="control-tag primary">NS - 国家安全</span>
+                                    <span class="control-tag">AT - 反恐</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="report-row">
+                            <div class="report-label">分类依据</div>
+                            <div class="report-value">EAR Part 774, Category 3 - Electronics. 3B001.f管控用于制造半导体器件的光刻设备，光源波长短于245nm。本设备使用193nm ArF光源，符合该管控参数。</div>
+                        </div>
+                        
+                        <div class="report-section-title">四、主要目的国许可要求</div>
+                        <table class="license-table">
+                            <tr>
+                                <th>目的国</th>
+                                <th>许可要求</th>
+                                <th>可用例外</th>
+                            </tr>
+                            <tr>
+                                <td>🇨🇳 中国</td>
+                                <td class="yes">需要许可证</td>
+                                <td class="exception">无可用例外</td>
+                            </tr>
+                            <tr>
+                                <td>🇩🇪 德国</td>
+                                <td class="no">无需许可证</td>
+                                <td class="exception">—</td>
+                            </tr>
+                            <tr>
+                                <td>🇯🇵 日本</td>
+                                <td class="no">无需许可证</td>
+                                <td class="exception">—</td>
+                            </tr>
+                            <tr>
+                                <td>🇷🇺 俄罗斯</td>
+                                <td class="yes">需要许可证</td>
+                                <td class="exception">无可用例外</td>
+                            </tr>
+                        </table>
+                        
+                        <div class="report-section-title">五、排除的替代分类</div>
+                        <div class="alt-codes">
+                            <div class="alt-code-item">
+                                <span class="alt-code-num">3B001.a</span>
+                                <span class="alt-code-reason">管控外延设备，非光刻设备，排除</span>
+                            </div>
+                            <div class="alt-code-item">
+                                <span class="alt-code-num">EAR99</span>
+                                <span class="alt-code-reason">光源波长&lt;245nm，属CCL管控物项，不适用EAR99</span>
+                            </div>
+                        </div>
+                        
+                        <div class="report-section-title">六、风险提示</div>
+                        <div class="report-warning">
+                            <div class="report-warning-title">⚠️ 高风险物项</div>
+                            <p>该设备属于半导体制造核心设备，对华出口受严格管控。建议：(1) 核实最终用户是否在实体清单; (2) 确认最终用途; (3) 如需出口中国，需向BIS申请许可证，审批可能性较低。</p>
+                        </div>
+                        
+                        <div class="report-footer">
+                            <p>免责声明：本报告仅供参考，最终分类以BIS官方认定为准。如需官方分类，建议提交商品分类请求(CCATS)。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 样例2：通用电子元器件 -->
+        <div class="sample-accordion">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+                <div class="header-left">
+                    <span class="cat-icon">📟</span>
+                    <div class="header-info">
+                        <h3>工业级电容器</h3>
+                        <p>电子元器件 · 通用型</p>
+                    </div>
+                </div>
+                <span class="eccn-badge">EAR99</span>
+                <span class="arrow">▼</span>
+            </div>
+            <div class="accordion-content">
+                <div class="sample-input">
+                    <div class="sample-input-label">📥 客户提交的信息</div>
+                    <div class="sample-input-content">
+                        铝电解电容器，100μF 50V，工作温度-40℃~+105℃，用于工业电源
+                    </div>
+                </div>
+                <div class="sample-arrow">⬇️ 专业分析 + 律师审核 ⬇️</div>
+                <div class="sample-output">
+                    <div class="sample-output-label">📤 交付的分类报告</div>
+                    <div class="sample-output-content">
+                        <div class="report-header">
+                            <h3>ECCN分类建议报告</h3>
+                            <p>报告编号：ECCN-20241219-002</p>
+                            <div class="report-country">🇺🇸 美国出口管理条例 (EAR)</div>
+                        </div>
+                        
+                        <div class="report-section-title">一、产品信息</div>
+                        <div class="report-row">
+                            <div class="report-label">产品名称</div>
+                            <div class="report-value">铝电解电容器</div>
+                        </div>
+                        <div class="report-row">
+                            <div class="report-label">规格参数</div>
+                            <div class="report-value">100μF 50V，工作温度-40℃~+105℃</div>
+                        </div>
+                        <div class="report-row">
+                            <div class="report-label">用途</div>
+                            <div class="report-value">工业电源滤波</div>
+                        </div>
+                        
+                        <div class="report-section-title">二、EAR管辖判定</div>
+                        <div class="report-row">
+                            <div class="report-label">是否受EAR管辖</div>
+                            <div class="report-value highlight">是</div>
+                        </div>
+                        <div class="report-row">
+                            <div class="report-label">管辖依据</div>
+                            <div class="report-value">美国原产物项，但不在CCL管控清单上</div>
+                        </div>
+                        
+                        <div class="report-section-title">三、ECCN分类建议</div>
+                        <div class="report-row">
+                            <div class="report-label">建议分类</div>
+                            <div class="report-value highlight" style="color: #2e7d32;">EAR99</div>
+                        </div>
+                        <div class="report-row">
+                            <div class="report-label">含义</div>
+                            <div class="report-value">受EAR管辖，但不在商业管控清单(CCL)上，属于低敏感度物项</div>
+                        </div>
+                        <div class="report-row">
+                            <div class="report-label">分类依据</div>
+                            <div class="report-value">该电容器为通用工业级元器件，不具备CCL Category 3中管控电容器的特殊性能参数（如军用级耐辐射、特高温等），因此归类为EAR99。</div>
+                        </div>
+                        
+                        <div class="report-section-title">四、出口许可要求</div>
+                        <table class="license-table">
+                            <tr>
+                                <th>目的国</th>
+                                <th>许可要求</th>
+                                <th>备注</th>
+                            </tr>
+                            <tr>
+                                <td>🇨🇳 中国</td>
+                                <td class="no">一般无需许可证</td>
+                                <td class="exception">需筛查最终用户</td>
+                            </tr>
+                            <tr>
+                                <td>🇷🇺 俄罗斯</td>
+                                <td class="yes">需要许可证</td>
+                                <td class="exception">受俄罗斯制裁影响</td>
+                            </tr>
+                            <tr>
+                                <td>🇰🇵 朝鲜</td>
+                                <td class="yes">禁止出口</td>
+                                <td class="exception">全面禁运</td>
+                            </tr>
+                        </table>
+                        <p style="font-size: 13px; color: #666; margin-top: 10px;">* EAR99物项仍需遵守针对特定国家/实体的制裁规定</p>
+                        
+                        <div class="report-section-title">五、风险提示</div>
+                        <div class="report-warning" style="border-left-color: #4caf50; background: #e8f5e9;">
+                            <div class="report-warning-title" style="color: #2e7d32;">✅ 低风险物项</div>
+                            <p>该产品为通用元器件，出口大多数国家无需许可证。但仍需注意：(1) 筛查最终用户是否在制裁名单; (2) 确认最终用途非军事/核相关; (3) 注意俄罗斯等受制裁国家的限制。</p>
+                        </div>
+                        
+                        <div class="report-footer">
+                            <p>免责声明：本报告仅供参考，最终分类以BIS官方认定为准。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <p class="sample-note">💡 点击样例卡片展开查看完整报告 · 以上均为真实交付样例（已脱敏）</p>
+    </div>
+    
+    <!-- ========== FAQ ========== -->
+    <div class="faq-section">
+        <p class="faq-title"><span>❓ 常见问题</span></p>
+        
+        <div class="faq-item">
+            <div class="faq-q" onclick="toggleFaq(this)">
+                <span>什么情况下需要做ECCN分类？</span>
+                <span class="faq-arrow">▼</span>
+            </div>
+            <div class="faq-a">
+                以下情况建议进行ECCN分类：(1) 从美国出口产品; (2) 产品含有美国原产成分或技术; (3) 使用美国设备/软件生产的产品; (4) 客户要求提供ECCN信息; (5) 产品可能具有两用性质（军民两用）。
+            </div>
+        </div>
+        
+        <div class="faq-item">
+            <div class="faq-q" onclick="toggleFaq(this)">
+                <span>EAR99是什么意思？</span>
+                <span class="faq-arrow">▼</span>
+            </div>
+            <div class="faq-a">
+                EAR99表示产品受EAR管辖，但不在商业管控清单(CCL)上。这类产品通常为低敏感度物项，出口到大多数国家不需要许可证。但仍需注意针对特定国家（如朝鲜、伊朗）和特定实体（实体清单）的限制。
+            </div>
+        </div>
+        
+        <div class="faq-item">
+            <div class="faq-q" onclick="toggleFaq(this)">
+                <span>我需要提供什么材料？</span>
+                <span class="faq-arrow">▼</span>
+            </div>
+            <div class="faq-a">
+                基本材料：产品名称、型号、技术参数、用途说明。材料越详细（如技术规格书、产品手册、成分清单等），分类越准确。对于复杂产品，建议提供详细技术资料。
+            </div>
+        </div>
+        
+        <div class="faq-item">
+            <div class="faq-q" onclick="toggleFaq(this)">
+                <span>你们的分类和BIS官方分类有什么区别？</span>
+                <span class="faq-arrow">▼</span>
+            </div>
+            <div class="faq-a">
+                我们提供的是<strong>专业分类建议</strong>，基于EAR法规和CCL清单进行分析。如需获得BIS官方认定，需要向BIS提交商品分类请求(CCATS)，周期通常为数周至数月。我们的报告可以作为企业内部合规参考，也可以作为提交CCATS的准备材料。
+            </div>
+        </div>
+        
+        <div class="faq-item">
+            <div class="faq-q" onclick="toggleFaq(this)">
+                <span>你们只做EAR相关的分类吗？</span>
+                <span class="faq-arrow">▼</span>
+            </div>
+            <div class="faq-a">
+                是的，目前我们专注于<strong>EAR（出口管理条例）</strong>管辖的物项分类。ITAR（国际武器贸易条例）管辖的军品分类暂不提供服务。如果您不确定产品属于EAR还是ITAR管辖，可以先咨询我们进行初步判断。
+            </div>
+        </div>
+    </div>
+    
+    <!-- 交叉营销 -->
+    <div class="cross-sell">
+        <p class="cross-sell-title">🎁 相关服务</p>
+        <div class="cross-sell-cards">
+            <a href="hs-service.html" class="cross-card">
+                <div class="cross-card-icon">📦</div>
+                <div class="cross-card-name">HS编码归类</div>
+                <div class="cross-card-desc">中国海关税则编码</div>
+            </a>
+            <a href="risk-check-service.html" class="cross-card">
+                <div class="cross-card-icon">🔍</div>
+                <div class="cross-card-name">企业合规风险检索</div>
+                <div class="cross-card-desc">制裁清单 · 涉军 · 涉疆</div>
+            </a>
+        </div>
+    </div>
+    
+    <!-- 赠送提示 -->
+    <div class="gift-banner">
+        <div class="gift-banner-inner">
+            🎁 <strong>下单即赠</strong>：购买本服务，免费体验「HS编码归类」或「企业风险检索」服务一次！
+        </div>
+    </div>
+    
+    <!-- 分隔线 -->
+    <div class="divider">
+        <hr class="divider-line">
+        <div class="divider-text"><span>↓ 点击下方按钮开始 ↓</span></div>
+    </div>
+    
+    <!-- 行动区 -->
+    <div class="action-section">
+        <p class="action-title"><span>请选择联系方式</span></p>
+        
+        <a href="https://qi0hecoa.jsjform.com/f/ot1UfB" class="btn-main" target="_blank">
+            立即提交产品信息
+        </a>
+        
+        <div class="btn-secondary" onclick="showWechat()">
+            微信咨询（需加好友）
+        </div>
+        
+        <p class="action-note">提交表单后24小时内联系您</p>
+    </div>
+    
+    <div class="footer">
+        <p>隆天律师事务所 · 服务时间：工作日 9:00-21:00</p>
+    </div>
+    
+    <!-- 微信弹窗 -->
+    <div class="modal-overlay" id="wechatModal" onclick="hideWechat()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <h3>微信扫码添加</h3>
+            <p class="wechat-id">微信号：wolailahhaa</p>
+            <p style="font-size: 13px; color: #999; margin-top: 10px;">添加时请备注"ECCN分类"</p>
+            <button class="modal-close" onclick="hideWechat()">关闭</button>
+        </div>
+    </div>
+    
+    <script>
+        // 折叠面板切换
+        function toggleAccordion(header) {
+            const content = header.nextElementSibling;
+            const isActive = header.classList.contains('active');
+            
+            document.querySelectorAll('.accordion-header.active').forEach(h => {
+                if (h !== header) {
+                    h.classList.remove('active');
+                    h.nextElementSibling.classList.remove('show');
+                }
+            });
+            
+            if (!isActive) {
+                header.classList.add('active');
+                content.classList.add('show');
+                setTimeout(() => {
+                    header.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 100);
+            } else {
+                header.classList.remove('active');
+                content.classList.remove('show');
+            }
+        }
+        
+        // FAQ切换
+        function toggleFaq(q) {
+            const item = q.parentElement;
+            const wasOpen = item.classList.contains('open');
+            
+            document.querySelectorAll('.faq-item.open').forEach(i => {
+                i.classList.remove('open');
+            });
+            
+            if (!wasOpen) {
+                item.classList.add('open');
+            }
+        }
+        
+        // 微信弹窗
+        function showWechat() { 
+            document.getElementById('wechatModal').style.display = 'flex'; 
+        }
+        function hideWechat() { 
+            document.getElementById('wechatModal').style.display = 'none'; 
+        }
+    </script>
+</body>
+</html>
