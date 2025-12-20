@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HS编码智能归类服务 | 专业 · 高效 · 保密</title>
+    <title>HS编码归类服务 | 隆天律师事务所 | 专业 · 高效 · 保密</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -530,6 +530,157 @@
             opacity: 0.8;
         }
         
+        /* 服务流程 */
+        .flow-steps {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin: 15px 0;
+        }
+        .flow-step {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 10px 16px;
+            border-radius: 25px;
+            font-size: 14px;
+        }
+        .step-num {
+            background: white;
+            color: #667eea;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 12px;
+        }
+        .flow-arrow {
+            color: #999;
+            font-size: 18px;
+        }
+        .flow-note {
+            font-size: 13px;
+            color: #4caf50;
+            text-align: center;
+            margin-top: 10px;
+        }
+        
+        /* 团队介绍 */
+        .team-block {
+            background: linear-gradient(135deg, #f8f9ff 0%, #f0f4ff 100%);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #e0e6ff;
+        }
+        .team-info {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+        }
+        .team-avatar {
+            font-size: 48px;
+            background: white;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
+            flex-shrink: 0;
+        }
+        .team-detail {
+            flex: 1;
+        }
+        .team-name {
+            font-size: 20px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 4px;
+        }
+        .team-firm {
+            font-size: 15px;
+            color: #667eea;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .team-desc {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.7;
+        }
+        
+        /* FAQ */
+        .faq-section {
+            max-width: 750px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+        .faq-title {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .faq-title span {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+        .faq-item {
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            overflow: hidden;
+        }
+        .faq-q {
+            padding: 18px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            color: #333;
+            transition: background 0.2s;
+        }
+        .faq-q:hover {
+            background: #f8f9ff;
+        }
+        .faq-arrow {
+            color: #667eea;
+            font-size: 12px;
+            transition: transform 0.3s;
+        }
+        .faq-item.open .faq-arrow {
+            transform: rotate(180deg);
+        }
+        .faq-a {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+            font-size: 14px;
+            color: #555;
+            line-height: 1.8;
+            padding: 0 20px;
+            background: #fafbff;
+            border-top: 1px solid transparent;
+        }
+        .faq-item.open .faq-a {
+            max-height: 300px;
+            padding: 18px 20px;
+            border-top-color: #eee;
+        }
+        
         @media (max-width: 500px) {
             .info-section h1 { font-size: 24px; }
             .btn-main { font-size: 18px; padding: 18px; }
@@ -541,6 +692,11 @@
             .accordion-header .header-info h3 { font-size: 14px; }
             .stats-bar { gap: 25px; }
             .stat-num { font-size: 24px; }
+            .flow-steps { gap: 5px; }
+            .flow-step { padding: 8px 12px; font-size: 12px; }
+            .flow-arrow { display: none; }
+            .team-info { flex-direction: column; align-items: center; text-align: center; }
+            .team-avatar { width: 70px; height: 70px; font-size: 40px; }
         }
     </style>
 </head>
@@ -548,16 +704,16 @@
     <!-- 展示区 -->
     <div class="info-section">
         <div class="logo">📦</div>
-        <h1>HS编码智能归类服务</h1>
-        <p class="tagline">10年+跨境合规经验 · AI辅助 · 专业高效</p>
+        <h1>HS编码专业归类服务</h1>
+        <p class="tagline">隆天律师事务所 · 专业律师团队 · 10年+跨境合规经验</p>
         <div class="stats-bar">
             <div class="stat-item">
                 <div class="stat-num">500+</div>
                 <div class="stat-label">归类案例</div>
             </div>
             <div class="stat-item">
-                <div class="stat-num">99%</div>
-                <div class="stat-label">准确率</div>
+                <div class="stat-num">10年+</div>
+                <div class="stat-label">合规经验</div>
             </div>
             <div class="stat-item">
                 <div class="stat-num">24h</div>
@@ -585,7 +741,110 @@
         
         <div class="content-block">
             <h2>交付时间</h2>
-            <p>24小时内交付，急件可加急</p>
+            <p>24小时内交付（自然日），急件可加急处理</p>
+        </div>
+        
+        <div class="content-block">
+            <h2>服务流程</h2>
+            <div class="flow-steps">
+                <div class="flow-step">
+                    <span class="step-num">1</span>
+                    <span class="step-text">提交产品信息</span>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">
+                    <span class="step-num">2</span>
+                    <span class="step-text">我们出具报告</span>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">
+                    <span class="step-num">3</span>
+                    <span class="step-text">确认并付款</span>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">
+                    <span class="step-num">4</span>
+                    <span class="step-text">交付完整报告</span>
+                </div>
+            </div>
+            <p class="flow-note">* 先服务后付款，让您看到成果再决定</p>
+        </div>
+        
+        <div class="content-block team-block">
+            <h2>服务团队</h2>
+            <div class="team-info">
+                <div class="team-avatar">⚖️</div>
+                <div class="team-detail">
+                    <div class="team-name">王淼 律师</div>
+                    <div class="team-firm">隆天律师事务所</div>
+                    <div class="team-desc">上海合规团队专业律师，10年+跨境贸易与进出口合规经验，专注海关归类、贸易合规、出口管制等领域。</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- ========== FAQ ========== -->
+    <div class="faq-section">
+        <p class="faq-title"><span>❓ 常见问题</span></p>
+        
+        <div class="faq-item">
+            <div class="faq-q" onclick="toggleFaq(this)">
+                <span>我需要提供什么材料？</span>
+                <span class="faq-arrow">▼</span>
+            </div>
+            <div class="faq-a">
+                最基本的材料即可开始：产品名称、型号、简单描述或图片。材料越详细（如说明书、成分表、用途说明等），我们出结果的速度越快、报告质量越高。
+            </div>
+        </div>
+        
+        <div class="faq-item">
+            <div class="faq-q" onclick="toggleFaq(this)">
+                <span>怎么付款？什么时候付？</span>
+                <span class="faq-arrow">▼</span>
+            </div>
+            <div class="faq-a">
+                <strong>先服务，后付款。</strong>您提交材料后，我们先完成归类报告。您确认报告内容满意后再付款，付款后我们发送完整报告。支持微信、支付宝、对公转账。
+            </div>
+        </div>
+        
+        <div class="faq-item">
+            <div class="faq-q" onclick="toggleFaq(this)">
+                <span>报告是人工做的还是自动生成的？</span>
+                <span class="faq-arrow">▼</span>
+            </div>
+            <div class="faq-a">
+                我们有部分自动化工具辅助提升效率，但<strong>每份报告都经过专业律师人工审核把关</strong>，确保归类依据准确、法规引用正确。
+            </div>
+        </div>
+        
+        <div class="faq-item">
+            <div class="faq-q" onclick="toggleFaq(this)">
+                <span>和报关行、贸促会有什么区别？</span>
+                <span class="faq-arrow">▼</span>
+            </div>
+            <div class="faq-a">
+                报关行通常只给结果，不给详细依据；贸促会官方但周期较长。我们的优势是：<strong>专业律师出具、附完整法规依据、快速交付、性价比高</strong>。报告可作为企业内部合规参考。
+            </div>
+        </div>
+        
+        <div class="faq-item">
+            <div class="faq-q" onclick="toggleFaq(this)">
+                <span>报告能保证海关一定认可吗？</span>
+                <span class="faq-arrow">▼</span>
+            </div>
+            <div class="faq-a">
+                HS编码归类本身存在一定的专业判断空间，最终以海关认定为准，这是行业通行做法。我们的报告提供专业的归类建议和详细依据，帮助您做出合理的申报决策，并在必要时作为归类参考材料。
+            </div>
+        </div>
+        
+        <div class="faq-item">
+            <div class="faq-q" onclick="toggleFaq(this)">
+                <span>批量归类有优惠吗？</span>
+                <span class="faq-arrow">▼</span>
+            </div>
+            <div class="faq-a">
+                有的。5个编码以上可享受批量优惠，具体请联系我们沟通详情。长期合作客户另有优惠方案。
+            </div>
         </div>
     </div>
     
@@ -622,7 +881,7 @@
                         计量型交流互感器-AKH-0.66G-30I 50/5 0.2级 数量20
                     </div>
                 </div>
-                <div class="sample-arrow">⬇️ AI分析 + 专家复核 ⬇️</div>
+                <div class="sample-arrow">⬇️ 专业归类 + 律师审核 ⬇️</div>
                 <div class="sample-output">
                     <div class="sample-output-label">📤 交付的归类报告</div>
                     <div class="sample-output-content">
@@ -742,7 +1001,7 @@
                         太极鼻窦炎口服液，10ml×10支/盒，批号25070409，太极集团重庆涪陵制药厂生产，清热解毒，宣肺通窍，用于急慢性鼻窦炎
                     </div>
                 </div>
-                <div class="sample-arrow">⬇️ AI分析 + 专家复核 ⬇️</div>
+                <div class="sample-arrow">⬇️ 专业归类 + 律师审核 ⬇️</div>
                 <div class="sample-output">
                     <div class="sample-output-label">📤 交付的归类报告</div>
                     <div class="sample-output-content">
@@ -890,7 +1149,7 @@
                         工业级氢氧化钠（片碱），纯度99%，25kg/袋，用于污水处理
                     </div>
                 </div>
-                <div class="sample-arrow">⬇️ AI分析 + 专家复核 ⬇️</div>
+                <div class="sample-arrow">⬇️ 专业归类 + 律师审核 ⬇️</div>
                 <div class="sample-output">
                     <div class="sample-output-label">📤 交付的归类报告</div>
                     <div class="sample-output-content">
@@ -977,7 +1236,7 @@
                         数控车床用主轴，BT40刀柄接口，最高转速8000rpm，用于加工中心
                     </div>
                 </div>
-                <div class="sample-arrow">⬇️ AI分析 + 专家复核 ⬇️</div>
+                <div class="sample-arrow">⬇️ 专业归类 + 律师审核 ⬇️</div>
                 <div class="sample-output">
                     <div class="sample-output-label">📤 交付的归类报告</div>
                     <div class="sample-output-content">
@@ -1136,6 +1395,22 @@
         }
         function hideWechat() { 
             document.getElementById('wechatModal').style.display = 'none'; 
+        }
+        
+        // FAQ切换
+        function toggleFaq(q) {
+            const item = q.parentElement;
+            const wasOpen = item.classList.contains('open');
+            
+            // 关闭所有
+            document.querySelectorAll('.faq-item.open').forEach(i => {
+                i.classList.remove('open');
+            });
+            
+            // 如果之前未打开，则打开当前项
+            if (!wasOpen) {
+                item.classList.add('open');
+            }
         }
     </script>
 </body>
