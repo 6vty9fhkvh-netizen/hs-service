@@ -507,11 +507,11 @@
             <div class="api-group">
                 <div class="api-label">🔑 CSL API Key（必需）</div>
                 <div class="api-input-group">
-                    <input type="password" class="api-input" id="cslApiKeyInput" placeholder="输入 Trade.gov API Key">
+                    <input type="password" class="api-input" id="cslApiKeyInput" placeholder="输入 Trade.gov Subscription Key">
                     <button class="api-save-btn" onclick="saveCslApiKey()">保存</button>
                 </div>
                 <p class="api-hint">
-                    获取方式：访问 <a href="https://api.trade.gov/apps/store/" target="_blank">api.trade.gov</a> 注册获取免费 API Key
+                    获取方式：<a href="https://developer.trade.gov/" target="_blank">developer.trade.gov</a> → 注册 → Products → 订阅 Data Services Platform APIs
                 </p>
             </div>
 
@@ -574,8 +574,8 @@
     <script>
         // ===== 配置 =====
         const DEEPSEEK_API_URL = 'https://api.deepseek.com/chat/completions';
-        // 正确的 CSL API URL（需要 API Key）
-        const CSL_API_URL = 'https://api.trade.gov/consolidated_screening_list/search';
+        // 正确的 CSL API URL
+        const CSL_API_URL = 'https://data.trade.gov/consolidated_screening_list/v1/search';
 
         // ===== API Key 管理 =====
         function saveDeepseekApiKey() {
@@ -692,12 +692,15 @@
         // ===== CSL 查询 =====
         async function searchCSL(name, fuzzy = true) {
             const apiKey = getCslApiKey();
+            console.log('CSL API Key:', apiKey ? `${apiKey.substring(0, 8)}...` : 'NULL');
+            
             if (!apiKey) {
                 throw new Error('请先配置 CSL API Key');
             }
 
             const params = new URLSearchParams();
-            params.append('api_key', apiKey);
+            // 通过 URL 参数传递 subscription key（避免 CORS 预检问题）
+            params.append('subscription-key', apiKey);
             
             if (fuzzy) {
                 params.append('name', name);
@@ -706,9 +709,10 @@
                 params.append('q', name);
             }
 
-            console.log('CSL API URL:', `${CSL_API_URL}?${params}`);
+            const url = `${CSL_API_URL}?${params}`;
+            console.log('CSL API URL:', url);
 
-            const response = await fetch(`${CSL_API_URL}?${params}`, {
+            const response = await fetch(url, {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json'
@@ -718,7 +722,7 @@
             if (!response.ok) {
                 const errorText = await response.text();
                 console.error('CSL API Error:', response.status, errorText);
-                if (response.status === 403) {
+                if (response.status === 401 || response.status === 403) {
                     throw new Error('CSL API Key 无效或已过期');
                 }
                 throw new Error(`CSL API 错误 (${response.status})`);
