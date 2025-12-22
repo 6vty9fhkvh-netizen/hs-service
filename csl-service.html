@@ -859,10 +859,25 @@
             `;
 
             results.forEach(item => {
-                const aliases = item.alt_names ? item.alt_names.split(';').filter(a => a.trim()) : [];
-                const addresses = item.addresses ? 
-                    (Array.isArray(item.addresses) ? item.addresses.map(a => a.address || a).join(', ') : String(item.addresses)) 
-                    : '';
+                // 处理 alt_names：可能是数组或分号分隔的字符串
+                let aliases = [];
+                if (item.alt_names) {
+                    if (Array.isArray(item.alt_names)) {
+                        aliases = item.alt_names.filter(a => a && a.trim());
+                    } else if (typeof item.alt_names === 'string') {
+                        aliases = item.alt_names.split(';').filter(a => a && a.trim());
+                    }
+                }
+                
+                // 处理 addresses：可能是数组或字符串
+                let addresses = '';
+                if (item.addresses) {
+                    if (Array.isArray(item.addresses)) {
+                        addresses = item.addresses.map(a => a.address || a.full_address || a).join(', ');
+                    } else {
+                        addresses = String(item.addresses);
+                    }
+                }
                 
                 html += `
                     <div class="result-card">
