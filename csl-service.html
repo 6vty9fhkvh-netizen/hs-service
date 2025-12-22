@@ -25,11 +25,7 @@
             --font-mono: 'IBM Plex Mono', monospace;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: var(--font-sans);
@@ -41,10 +37,7 @@
 
         .grid-bg {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            top: 0; left: 0; right: 0; bottom: 0;
             background-image: 
                 linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
@@ -61,7 +54,6 @@
             padding: 0 2rem;
         }
 
-        /* Header */
         header {
             padding: 1.5rem 0;
             border-bottom: 1px solid var(--border);
@@ -84,9 +76,7 @@
             transition: color 0.15s;
         }
 
-        .back-link:hover {
-            color: var(--text-primary);
-        }
+        .back-link:hover { color: var(--text-primary); }
 
         .header-badge {
             font-family: var(--font-mono);
@@ -98,16 +88,12 @@
             border: 1px solid rgba(239, 68, 68, 0.2);
         }
 
-        /* Title Section */
         .title-section {
             text-align: center;
             margin-bottom: 2.5rem;
         }
 
-        .title-icon {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
+        .title-icon { font-size: 2.5rem; margin-bottom: 1rem; }
 
         .title-section h1 {
             font-size: 2rem;
@@ -122,7 +108,6 @@
             margin: 0 auto;
         }
 
-        /* API Section */
         .api-section {
             background: var(--bg-card);
             border: 1px solid var(--border);
@@ -141,9 +126,7 @@
             font-size: 0.9rem;
         }
 
-        .api-section summary:hover {
-            color: var(--text-primary);
-        }
+        .api-section summary:hover { color: var(--text-primary); }
 
         .api-section[open] summary {
             margin-bottom: 1rem;
@@ -151,13 +134,8 @@
             border-bottom: 1px solid var(--border);
         }
 
-        .api-group {
-            margin-bottom: 1.25rem;
-        }
-
-        .api-group:last-child {
-            margin-bottom: 0;
-        }
+        .api-group { margin-bottom: 1.25rem; }
+        .api-group:last-child { margin-bottom: 0; }
 
         .api-label {
             font-size: 0.8rem;
@@ -168,15 +146,7 @@
             gap: 0.5rem;
         }
 
-        .api-label .required {
-            color: var(--accent-red);
-            font-size: 0.7rem;
-        }
-
-        .api-input-group {
-            display: flex;
-            gap: 0.75rem;
-        }
+        .api-input-group { display: flex; gap: 0.75rem; }
 
         .api-input {
             flex: 1;
@@ -205,9 +175,7 @@
             transition: all 0.15s;
         }
 
-        .api-save-btn:hover {
-            background: var(--border);
-        }
+        .api-save-btn:hover { background: var(--border); }
 
         .api-hint {
             margin-top: 0.5rem;
@@ -235,15 +203,10 @@
             gap: 0.35rem;
         }
 
-        .api-status-item.ok {
-            color: var(--accent-green);
-        }
+        .api-status-item.ok { color: var(--accent-green); }
+        .api-status-item.missing { color: var(--accent-orange); }
+        .api-status-item.error { color: var(--accent-red); }
 
-        .api-status-item.missing {
-            color: var(--accent-orange);
-        }
-
-        /* Search Box */
         .search-container {
             background: var(--bg-card);
             border: 1px solid var(--border);
@@ -275,9 +238,7 @@
             border-color: var(--accent-red);
         }
 
-        .search-input::placeholder {
-            color: var(--text-dim);
-        }
+        .search-input::placeholder { color: var(--text-dim); }
 
         .search-btn {
             position: absolute;
@@ -295,14 +256,8 @@
             transition: all 0.15s;
         }
 
-        .search-btn:hover {
-            background: #dc2626;
-        }
-
-        .search-btn:disabled {
-            background: var(--border);
-            cursor: not-allowed;
-        }
+        .search-btn:hover { background: #dc2626; }
+        .search-btn:disabled { background: var(--border); cursor: not-allowed; }
 
         .search-options {
             display: flex;
@@ -325,7 +280,6 @@
             height: 16px;
         }
 
-        /* Translation Preview */
         .translation-preview {
             background: var(--bg-card);
             border: 1px solid var(--border);
@@ -359,7 +313,6 @@
             border: 1px solid rgba(59, 130, 246, 0.2);
         }
 
-        /* Status */
         .status {
             text-align: center;
             padding: 3rem 2rem;
@@ -382,11 +335,8 @@
             animation: spin 0.8s linear infinite;
         }
 
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* Results */
         .results-header {
             display: flex;
             justify-content: space-between;
@@ -399,9 +349,7 @@
             font-size: 1.1rem;
         }
 
-        .results-count .number {
-            color: var(--accent-orange);
-        }
+        .results-count .number { color: var(--accent-orange); }
 
         .result-card {
             background: var(--bg-card);
@@ -461,9 +409,7 @@
             color: var(--text-secondary);
         }
 
-        .result-aliases strong {
-            color: var(--text-primary);
-        }
+        .result-aliases strong { color: var(--text-primary); }
 
         .clear-result {
             background: var(--bg-card);
@@ -491,11 +437,8 @@
             margin-bottom: 0.5rem;
         }
 
-        .clear-result p {
-            color: var(--text-secondary);
-        }
+        .clear-result p { color: var(--text-secondary); }
 
-        /* Footer */
         footer {
             border-top: 1px solid var(--border);
             padding: 2rem 0;
@@ -513,7 +456,6 @@
             text-decoration: none;
         }
 
-        /* Source Legend */
         .source-legend {
             display: flex;
             flex-wrap: wrap;
@@ -524,21 +466,11 @@
             color: var(--text-dim);
         }
 
-        .source-legend span {
-            font-family: var(--font-mono);
-        }
+        .source-legend span { font-family: var(--font-mono); }
 
-        /* Responsive */
         @media (max-width: 640px) {
-            .header-content {
-                flex-direction: column;
-                gap: 1rem;
-            }
-
-            .search-input {
-                padding-right: 1rem;
-            }
-
+            .header-content { flex-direction: column; gap: 1rem; }
+            .search-input { padding-right: 1rem; }
             .search-btn {
                 position: static;
                 transform: none;
@@ -546,19 +478,9 @@
                 margin-top: 0.75rem;
                 padding: 1rem;
             }
-
-            .search-input-wrapper {
-                display: flex;
-                flex-direction: column;
-            }
-
-            .api-input-group {
-                flex-direction: column;
-            }
-
-            .container {
-                padding: 0 1rem;
-            }
+            .search-input-wrapper { display: flex; flex-direction: column; }
+            .api-input-group { flex-direction: column; }
+            .container { padding: 0 1rem; }
         }
     </style>
 </head>
@@ -579,38 +501,31 @@
             <p>支持中英文输入，AI 智能翻译匹配美国综合筛查名单</p>
         </section>
 
-        <details class="api-section" id="apiSection">
-            <summary>⚙️ API 设置（首次使用请配置）</summary>
+        <details class="api-section" id="apiSection" open>
+            <summary>⚙️ API 设置</summary>
             
-            <!-- ITA CSL API Key -->
             <div class="api-group">
-                <div class="api-label">
-                    ITA CSL API Key <span class="required">必需</span>
-                </div>
+                <div class="api-label">🔑 CSL API Key（必需）</div>
                 <div class="api-input-group">
-                    <input type="password" class="api-input" id="itaApiKeyInput" placeholder="输入 ITA Subscription Key">
-                    <button class="api-save-btn" onclick="saveItaApiKey()">保存</button>
+                    <input type="password" class="api-input" id="cslApiKeyInput" placeholder="输入 Trade.gov API Key">
+                    <button class="api-save-btn" onclick="saveCslApiKey()">保存</button>
                 </div>
                 <p class="api-hint">
-                    获取方式：访问 <a href="https://developer.trade.gov/" target="_blank">developer.trade.gov</a> → 注册账号 → Products → Subscribe → 复制 Primary Key（免费）
+                    获取方式：访问 <a href="https://api.trade.gov/apps/store/" target="_blank">api.trade.gov</a> 注册获取免费 API Key
                 </p>
             </div>
 
-            <!-- DeepSeek API Key -->
             <div class="api-group">
-                <div class="api-label">
-                    DeepSeek API Key <span style="color: var(--text-dim);">（中文翻译，可选）</span>
-                </div>
+                <div class="api-label">🤖 DeepSeek API Key（可选，用于中文翻译）</div>
                 <div class="api-input-group">
-                    <input type="password" class="api-input" id="deepseekApiKeyInput" placeholder="输入 DeepSeek API Key">
+                    <input type="password" class="api-input" id="deepseekApiKeyInput" placeholder="输入 DeepSeek API Key（可选）">
                     <button class="api-save-btn" onclick="saveDeepseekApiKey()">保存</button>
                 </div>
                 <p class="api-hint">
-                    获取方式：访问 <a href="https://platform.deepseek.com/" target="_blank">platform.deepseek.com</a>（不配置则跳过 AI 翻译）
+                    获取方式：访问 <a href="https://platform.deepseek.com/" target="_blank">platform.deepseek.com</a>（不配置也可以使用，但中文搜索效果较差）
                 </p>
             </div>
 
-            <!-- Status -->
             <div class="api-status" id="apiStatus"></div>
         </details>
 
@@ -620,7 +535,7 @@
                     type="text" 
                     class="search-input" 
                     id="searchInput" 
-                    placeholder="输入公司或个人名称，如：华为、中兴、Huawei..."
+                    placeholder="输入公司或个人名称，如：Huawei、华为、ZTE..."
                     onkeypress="if(event.key === 'Enter') performSearch()"
                 >
                 <button class="search-btn" id="searchBtn" onclick="performSearch()">开始筛查</button>
@@ -659,18 +574,10 @@
     <script>
         // ===== 配置 =====
         const DEEPSEEK_API_URL = 'https://api.deepseek.com/chat/completions';
-        const CSL_API_URL = 'https://api.trade.gov/gateway/v1/consolidated_screening_list/v1/search';
+        // 正确的 CSL API URL（需要 API Key）
+        const CSL_API_URL = 'https://api.trade.gov/consolidated_screening_list/search';
 
         // ===== API Key 管理 =====
-        function saveItaApiKey() {
-            const key = document.getElementById('itaApiKeyInput').value.trim();
-            if (key) {
-                localStorage.setItem('ita_api_key', key);
-                updateApiStatus();
-                alert('ITA API Key 已保存');
-            }
-        }
-
         function saveDeepseekApiKey() {
             const key = document.getElementById('deepseekApiKeyInput').value.trim();
             if (key) {
@@ -680,48 +587,49 @@
             }
         }
 
-        function getItaApiKey() {
-            return localStorage.getItem('ita_api_key');
-        }
-
         function getDeepseekApiKey() {
             return localStorage.getItem('deepseek_api_key');
         }
 
+        function saveCslApiKey() {
+            const key = document.getElementById('cslApiKeyInput').value.trim();
+            if (key) {
+                localStorage.setItem('csl_api_key', key);
+                updateApiStatus();
+                alert('CSL API Key 已保存');
+            } else {
+                alert('请输入有效的 API Key');
+            }
+        }
+
+        function getCslApiKey() {
+            return localStorage.getItem('csl_api_key');
+        }
+
         function updateApiStatus() {
-            const itaKey = getItaApiKey();
             const deepseekKey = getDeepseekApiKey();
-            
+            const cslKey = getCslApiKey();
             const statusHtml = `
-                <span class="api-status-item ${itaKey ? 'ok' : 'missing'}">
-                    ${itaKey ? '✓' : '○'} ITA CSL
+                <span class="api-status-item ${cslKey ? 'ok' : 'error'}">
+                    ${cslKey ? '✓' : '✗'} CSL API（必需）
                 </span>
                 <span class="api-status-item ${deepseekKey ? 'ok' : 'missing'}">
-                    ${deepseekKey ? '✓' : '○'} DeepSeek
+                    ${deepseekKey ? '✓' : '○'} DeepSeek（中文翻译，可选）
                 </span>
             `;
             document.getElementById('apiStatus').innerHTML = statusHtml;
         }
 
-        // 页面加载时检查
         window.onload = function() {
-            const itaKey = getItaApiKey();
             const deepseekKey = getDeepseekApiKey();
-            
-            if (itaKey) {
-                document.getElementById('itaApiKeyInput').value = itaKey;
-            }
             if (deepseekKey) {
                 document.getElementById('deepseekApiKeyInput').value = deepseekKey;
             }
-            
-            updateApiStatus();
-            
-            // 如果没有 ITA key，展开设置
-            if (!itaKey) {
-                document.getElementById('apiSection').setAttribute('open', '');
+            const cslKey = getCslApiKey();
+            if (cslKey) {
+                document.getElementById('cslApiKeyInput').value = cslKey;
             }
-            
+            updateApiStatus();
             document.getElementById('searchInput').focus();
         };
 
@@ -729,7 +637,7 @@
         async function translateToEnglish(chineseName) {
             const apiKey = getDeepseekApiKey();
             if (!apiKey) {
-                return [chineseName]; // 没有 key 就返回原文
+                return [chineseName];
             }
 
             const prompt = `你是一个专业的中英文翻译助手，专门处理公司名称和人名的翻译。
@@ -757,15 +665,13 @@
                     },
                     body: JSON.stringify({
                         model: 'deepseek-chat',
-                        messages: [
-                            { role: 'user', content: prompt }
-                        ],
+                        messages: [{ role: 'user', content: prompt }],
                         temperature: 0.3
                     })
                 });
 
                 if (!response.ok) {
-                    console.error('DeepSeek API error');
+                    console.error('DeepSeek API error:', response.status);
                     return [chineseName];
                 }
 
@@ -785,30 +691,41 @@
 
         // ===== CSL 查询 =====
         async function searchCSL(name, fuzzy = true) {
-            const apiKey = getItaApiKey();
+            const apiKey = getCslApiKey();
             if (!apiKey) {
-                throw new Error('请先配置 ITA CSL API Key');
+                throw new Error('请先配置 CSL API Key');
             }
 
-            const params = new URLSearchParams({
-                q: name,
-                fuzzy_name: fuzzy.toString()
-            });
+            const params = new URLSearchParams();
+            params.append('api_key', apiKey);
+            
+            if (fuzzy) {
+                params.append('name', name);
+                params.append('fuzzy_name', 'true');
+            } else {
+                params.append('q', name);
+            }
+
+            console.log('CSL API URL:', `${CSL_API_URL}?${params}`);
 
             const response = await fetch(`${CSL_API_URL}?${params}`, {
                 method: 'GET',
                 headers: {
-                    'Ocp-Apim-Subscription-Key': apiKey
+                    'Accept': 'application/json'
                 }
             });
             
             if (!response.ok) {
                 const errorText = await response.text();
                 console.error('CSL API Error:', response.status, errorText);
-                throw new Error(`CSL API 错误 (${response.status}): 请检查 API Key 是否正确`);
+                if (response.status === 403) {
+                    throw new Error('CSL API Key 无效或已过期');
+                }
+                throw new Error(`CSL API 错误 (${response.status})`);
             }
 
             const data = await response.json();
+            console.log('CSL Response:', data);
             return data.results || [];
         }
 
@@ -817,9 +734,7 @@
             const seen = new Set();
             return results.filter(item => {
                 const key = `${item.name}-${item.source}`;
-                if (seen.has(key)) {
-                    return false;
-                }
+                if (seen.has(key)) return false;
                 seen.add(key);
                 return true;
             });
@@ -839,13 +754,14 @@
                 return;
             }
 
-            if (!getItaApiKey()) {
-                document.getElementById('apiSection').setAttribute('open', '');
-                alert('请先配置 ITA CSL API Key');
+            // 检查 CSL API Key
+            if (!getCslApiKey()) {
+                alert('请先在上方配置 CSL API Key');
+                document.getElementById('apiSection').open = true;
+                document.getElementById('cslApiKeyInput').focus();
                 return;
             }
 
-            // 显示加载状态
             searchBtn.disabled = true;
             searchBtn.textContent = '筛查中...';
             transPreview.innerHTML = '';
@@ -860,7 +776,6 @@
                 const hasChinese = /[\u4e00-\u9fa5]/.test(input);
                 let searchVariants = [input];
 
-                // 如果是中文且启用了 AI 翻译
                 if (hasChinese && useAi && getDeepseekApiKey()) {
                     resultsArea.innerHTML = `
                         <div class="status loading">
@@ -941,6 +856,9 @@
 
             results.forEach(item => {
                 const aliases = item.alt_names ? item.alt_names.split(';').filter(a => a.trim()) : [];
+                const addresses = item.addresses ? 
+                    (Array.isArray(item.addresses) ? item.addresses.map(a => a.address || a).join(', ') : String(item.addresses)) 
+                    : '';
                 
                 html += `
                     <div class="result-card">
@@ -948,7 +866,7 @@
                         <div class="result-meta">
                             <span class="meta-item"><strong>类型:</strong> ${item.type || 'N/A'}</span>
                             <span class="meta-item"><strong>国家:</strong> ${item.country || item.countries || 'N/A'}</span>
-                            ${item.addresses ? `<span class="meta-item"><strong>地址:</strong> ${String(item.addresses).slice(0, 80)}...</span>` : ''}
+                            ${addresses ? `<span class="meta-item"><strong>地址:</strong> ${addresses.slice(0, 80)}${addresses.length > 80 ? '...' : ''}</span>` : ''}
                         </div>
                         <span class="result-source">${item.source || 'Unknown'}</span>
                         ${aliases.length > 0 ? `
