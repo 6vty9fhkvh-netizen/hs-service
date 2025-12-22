@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CSL 制裁名单筛查 | Legal AI Service</title>
+    <title>合规检索工具 | Internal Use</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
@@ -354,16 +354,49 @@
         .result-card {
             background: var(--bg-card);
             border: 1px solid var(--border);
-            border-left: 4px solid var(--accent-red);
+            border-left: 4px solid var(--accent-orange);
             border-radius: 12px;
             padding: 1.5rem;
             margin-bottom: 1rem;
             transition: all 0.15s;
+            position: relative;
+        }
+
+        .result-card.risk-high {
+            border-left-color: var(--accent-red);
+            background: linear-gradient(90deg, rgba(239, 68, 68, 0.05) 0%, var(--bg-card) 20%);
+        }
+
+        .result-card.risk-medium {
+            border-left-color: var(--accent-orange);
+        }
+
+        .result-card.risk-low {
+            border-left-color: var(--accent-blue);
         }
 
         .result-card:hover {
             border-color: var(--border-hover);
             transform: translateX(4px);
+        }
+
+        .result-rank {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            background: var(--bg-primary);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+        }
+
+        .result-sources {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
         }
 
         .result-name {
@@ -490,40 +523,36 @@
     <div class="container">
         <header>
             <div class="header-content">
-                <a href="index.html" class="back-link">← 返回工具列表</a>
-                <div class="header-badge">CSL Screening</div>
+                <span class="back-link">合规工具</span>
+                <div class="header-badge">Internal Tool</div>
             </div>
         </header>
 
         <section class="title-section">
-            <div class="title-icon">🛡️</div>
-            <h1>CSL 制裁名单筛查</h1>
-            <p>支持中英文输入，AI 智能翻译匹配美国综合筛查名单</p>
+            <div class="title-icon">🔍</div>
+            <h1>合规数据库检索</h1>
+            <p>支持中英文智能匹配</p>
         </section>
 
         <details class="api-section" id="apiSection" open>
-            <summary>⚙️ API 设置</summary>
+            <summary>⚙️ 接口配置</summary>
             
             <div class="api-group">
-                <div class="api-label">🔑 CSL API Key（必需）</div>
+                <div class="api-label">🔑 密钥一（必需）</div>
                 <div class="api-input-group">
-                    <input type="password" class="api-input" id="cslApiKeyInput" placeholder="输入 Trade.gov Subscription Key">
+                    <input type="password" class="api-input" id="cslApiKeyInput" placeholder="输入主数据库密钥">
                     <button class="api-save-btn" onclick="saveCslApiKey()">保存</button>
                 </div>
-                <p class="api-hint">
-                    获取方式：<a href="https://developer.trade.gov/" target="_blank">developer.trade.gov</a> → 注册 → Products → 订阅 Data Services Platform APIs
-                </p>
+                <p class="api-hint">联系管理员获取</p>
             </div>
 
             <div class="api-group">
-                <div class="api-label">🤖 DeepSeek API Key（可选，用于中文翻译）</div>
+                <div class="api-label">🤖 密钥二（可选，增强匹配）</div>
                 <div class="api-input-group">
-                    <input type="password" class="api-input" id="deepseekApiKeyInput" placeholder="输入 DeepSeek API Key（可选）">
+                    <input type="password" class="api-input" id="deepseekApiKeyInput" placeholder="输入翻译服务密钥（可选）">
                     <button class="api-save-btn" onclick="saveDeepseekApiKey()">保存</button>
                 </div>
-                <p class="api-hint">
-                    获取方式：访问 <a href="https://platform.deepseek.com/" target="_blank">platform.deepseek.com</a>（不配置也可以使用，但中文搜索效果较差）
-                </p>
+                <p class="api-hint">用于中英文智能转换</p>
             </div>
 
             <div class="api-status" id="apiStatus"></div>
@@ -535,19 +564,19 @@
                     type="text" 
                     class="search-input" 
                     id="searchInput" 
-                    placeholder="输入公司或个人名称，如：Huawei、华为、ZTE..."
+                    placeholder="输入检索关键词..."
                     onkeypress="if(event.key === 'Enter') performSearch()"
                 >
-                <button class="search-btn" id="searchBtn" onclick="performSearch()">开始筛查</button>
+                <button class="search-btn" id="searchBtn" onclick="performSearch()">检索</button>
             </div>
             <div class="search-options">
                 <label class="option-label">
                     <input type="checkbox" id="fuzzySearch" checked>
-                    启用模糊匹配
+                    模糊匹配
                 </label>
                 <label class="option-label">
                     <input type="checkbox" id="useAiTranslation" checked>
-                    AI 中文翻译
+                    智能转换
                 </label>
             </div>
         </div>
@@ -558,15 +587,11 @@
         <footer>
             <div class="footer-content">
                 <div class="source-legend">
-                    <span>SDN = OFAC 特别指定国民</span>
-                    <span>EL = 实体清单</span>
-                    <span>DPL = 拒绝人员清单</span>
-                    <span>UVL = 未经验证清单</span>
+                    <span style="color: var(--accent-red);">■ 高</span>
+                    <span style="color: var(--accent-orange);">■ 中</span>
+                    <span style="color: var(--accent-blue);">■ 低</span>
                 </div>
-                <p>
-                    数据来源：<a href="https://www.trade.gov/consolidated-screening-list" target="_blank">U.S. ITA Consolidated Screening List</a>
-                    · 本工具仅供参考
-                </p>
+                <p>仅供内部参考使用</p>
             </div>
         </footer>
     </div>
@@ -574,8 +599,99 @@
     <script>
         // ===== 配置 =====
         const DEEPSEEK_API_URL = 'https://api.deepseek.com/chat/completions';
-        // 正确的 CSL API URL
+        const CORS_PROXY = 'https://corsproxy.io/?';
         const CSL_API_URL = 'https://data.trade.gov/consolidated_screening_list/v1/search';
+
+        // ===== 内置名称映射 =====
+        const NAME_MAPPINGS = {
+            '华为': ['Huawei', 'Huawei Technologies', 'HUAWEI'],
+            '中兴': ['ZTE', 'ZTE Corporation', 'Zhongxing'],
+            '海康威视': ['Hikvision', 'Hangzhou Hikvision', 'HIK Vision'],
+            '大华': ['Dahua', 'Dahua Technology', 'Zhejiang Dahua'],
+            '科大讯飞': ['iFlytek', 'IFLYTEK', 'Anhui IFLYTEK'],
+            '商汤': ['SenseTime', 'Sense Time'],
+            '旷视': ['Megvii', 'Face++'],
+            '大疆': ['DJI', 'Da-Jiang', 'SZ DJI'],
+            '字节跳动': ['ByteDance', 'Byte Dance'],
+            '腾讯': ['Tencent', 'Tencent Holdings'],
+            '阿里巴巴': ['Alibaba', 'Alibaba Group'],
+            '百度': ['Baidu'],
+            '中芯国际': ['SMIC', 'Semiconductor Manufacturing International'],
+            '长江存储': ['YMTC', 'Yangtze Memory'],
+            '紫光': ['Tsinghua Unigroup', 'Unisplendour', 'UNIS'],
+            '中国电信': ['China Telecom'],
+            '中国移动': ['China Mobile'],
+            '中国联通': ['China Unicom'],
+            '复旦': ['Fudan'],
+            '清华': ['Tsinghua'],
+            '北大': ['Peking University', 'PKU'],
+            '中科院': ['Chinese Academy of Sciences', 'CAS'],
+            '北航': ['BUAA', 'Beihang University'],
+            '哈工大': ['HIT', 'Harbin Institute of Technology'],
+            '国防科大': ['NUDT', 'National University of Defense Technology'],
+            '西工大': ['NPU', 'Northwestern Polytechnical University'],
+            '新疆': ['Xinjiang'],
+            '中国航天': ['CASC', 'China Aerospace'],
+            '中国电子': ['CEC', 'China Electronics'],
+            '中国船舶': ['CSSC', 'China Shipbuilding'],
+            '中核': ['CNNC', 'China National Nuclear'],
+            '中广核': ['CGN', 'China General Nuclear'],
+        };
+
+        // ===== 简单拼音转换（常见姓名用字）=====
+        function toPinyin(chinese) {
+            const pinyinMap = {
+                '王': 'wang', '李': 'li', '张': 'zhang', '刘': 'liu', '陈': 'chen',
+                '杨': 'yang', '黄': 'huang', '赵': 'zhao', '周': 'zhou', '吴': 'wu',
+                '徐': 'xu', '孙': 'sun', '马': 'ma', '朱': 'zhu', '胡': 'hu',
+                '郭': 'guo', '何': 'he', '高': 'gao', '林': 'lin', '郑': 'zheng',
+                '梁': 'liang', '谢': 'xie', '宋': 'song', '唐': 'tang', '许': 'xu',
+                '韩': 'han', '冯': 'feng', '邓': 'deng', '曹': 'cao', '彭': 'peng',
+                '曾': 'zeng', '肖': 'xiao', '田': 'tian', '董': 'dong', '袁': 'yuan',
+                '潘': 'pan', '于': 'yu', '蒋': 'jiang', '蔡': 'cai', '余': 'yu',
+                '杜': 'du', '叶': 'ye', '程': 'cheng', '苏': 'su', '魏': 'wei',
+                '吕': 'lv', '丁': 'ding', '任': 'ren', '沈': 'shen', '姚': 'yao',
+                '卢': 'lu', '姜': 'jiang', '崔': 'cui', '钟': 'zhong', '谭': 'tan',
+                '陆': 'lu', '汪': 'wang', '范': 'fan', '金': 'jin', '石': 'shi',
+                '廖': 'liao', '贾': 'jia', '夏': 'xia', '韦': 'wei', '付': 'fu',
+                '方': 'fang', '白': 'bai', '邹': 'zou', '孟': 'meng', '熊': 'xiong',
+                '秦': 'qin', '邱': 'qiu', '江': 'jiang', '尹': 'yin', '薛': 'xue',
+                '闫': 'yan', '段': 'duan', '雷': 'lei', '侯': 'hou', '龙': 'long',
+                '明': 'ming', '华': 'hua', '伟': 'wei', '强': 'qiang', '军': 'jun',
+                '平': 'ping', '东': 'dong', '文': 'wen', '辉': 'hui', '力': 'li',
+                '斌': 'bin', '波': 'bo', '宁': 'ning', '贵': 'gui', '福': 'fu',
+                '生': 'sheng', '龙': 'long', '元': 'yuan', '全': 'quan', '国': 'guo',
+                '胜': 'sheng', '学': 'xue', '祥': 'xiang', '才': 'cai', '发': 'fa',
+                '武': 'wu', '新': 'xin', '利': 'li', '清': 'qing', '飞': 'fei',
+                '彬': 'bin', '富': 'fu', '顺': 'shun', '信': 'xin', '子': 'zi',
+                '杰': 'jie', '涛': 'tao', '昌': 'chang', '成': 'cheng', '康': 'kang',
+                '星': 'xing', '光': 'guang', '天': 'tian', '达': 'da', '安': 'an',
+                '岩': 'yan', '中': 'zhong', '茂': 'mao', '进': 'jin', '林': 'lin',
+                '有': 'you', '坚': 'jian', '和': 'he', '彪': 'biao', '博': 'bo',
+                '诚': 'cheng', '先': 'xian', '敬': 'jing', '震': 'zhen', '振': 'zhen',
+                '壮': 'zhuang', '会': 'hui', '思': 'si', '群': 'qun', '豪': 'hao',
+                '心': 'xin', '邦': 'bang', '承': 'cheng', '乐': 'le', '绍': 'shao',
+                '功': 'gong', '松': 'song', '善': 'shan', '厚': 'hou', '庆': 'qing',
+                '磊': 'lei', '民': 'min', '友': 'you', '裕': 'yu', '河': 'he',
+                '哲': 'zhe', '江': 'jiang', '超': 'chao', '浩': 'hao', '亮': 'liang',
+                '政': 'zheng', '谦': 'qian', '亨': 'heng', '奇': 'qi', '固': 'gu',
+                '之': 'zhi', '轮': 'lun', '翰': 'han', '朗': 'lang', '伯': 'bo',
+                '宏': 'hong', '言': 'yan', '若': 'ruo', '鸣': 'ming', '朋': 'peng',
+                '斌': 'bin', '梁': 'liang', '栋': 'dong', '维': 'wei', '启': 'qi',
+                '克': 'ke', '伦': 'lun', '翔': 'xiang', '旭': 'xu', '鹏': 'peng',
+                '泽': 'ze', '晨': 'chen', '辰': 'chen', '士': 'shi', '以': 'yi',
+                '建': 'jian', '家': 'jia', '致': 'zhi', '树': 'shu', '炎': 'yan',
+                '德': 'de', '行': 'xing', '时': 'shi', '泰': 'tai', '盛': 'sheng',
+                '科': 'ke', '技': 'ji', '电': 'dian', '子': 'zi', '通': 'tong',
+                '信': 'xin', '网': 'wang', '络': 'luo', '软': 'ruan', '件': 'jian',
+            };
+            
+            let result = '';
+            for (const char of chinese) {
+                result += pinyinMap[char] || char;
+            }
+            return result;
+        }
 
         // ===== API Key 管理 =====
         function saveDeepseekApiKey() {
@@ -583,7 +699,7 @@
             if (key) {
                 localStorage.setItem('deepseek_api_key', key);
                 updateApiStatus();
-                alert('DeepSeek API Key 已保存');
+                alert('密钥二已保存');
             }
         }
 
@@ -596,7 +712,7 @@
             if (key) {
                 localStorage.setItem('csl_api_key', key);
                 updateApiStatus();
-                alert('CSL API Key 已保存');
+                alert('密钥一已保存');
             } else {
                 alert('请输入有效的 API Key');
             }
@@ -611,10 +727,10 @@
             const cslKey = getCslApiKey();
             const statusHtml = `
                 <span class="api-status-item ${cslKey ? 'ok' : 'error'}">
-                    ${cslKey ? '✓' : '✗'} CSL API（必需）
+                    ${cslKey ? '✓' : '✗'} 密钥一
                 </span>
                 <span class="api-status-item ${deepseekKey ? 'ok' : 'missing'}">
-                    ${deepseekKey ? '✓' : '○'} DeepSeek（中文翻译，可选）
+                    ${deepseekKey ? '✓' : '○'} 密钥二
                 </span>
             `;
             document.getElementById('apiStatus').innerHTML = statusHtml;
@@ -635,71 +751,75 @@
 
         // ===== AI 翻译 =====
         async function translateToEnglish(chineseName) {
+            const variants = new Set();
+            
+            // 1. 先检查内置映射
+            for (const [cn, enList] of Object.entries(NAME_MAPPINGS)) {
+                if (chineseName.includes(cn)) {
+                    enList.forEach(en => variants.add(en));
+                }
+            }
+            
+            // 2. 添加拼音变体
+            const pinyin = toPinyin(chineseName);
+            if (pinyin !== chineseName) {
+                variants.add(pinyin);
+                // 首字母大写版本
+                variants.add(pinyin.charAt(0).toUpperCase() + pinyin.slice(1));
+            }
+            
+            // 3. 如果有 DeepSeek API Key，尝试调用（可选增强）
             const apiKey = getDeepseekApiKey();
-            if (!apiKey) {
+            if (apiKey) {
+                try {
+                    const prompt = `你是专业翻译。将中文名称"${chineseName}"翻译成所有可能的英文变体（官方名、拼音、缩写等）。只返回JSON数组，如：["Name1", "Name2"]`;
+                    const response = await fetch(CORS_PROXY + encodeURIComponent(DEEPSEEK_API_URL), {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${apiKey}`
+                        },
+                        body: JSON.stringify({
+                            model: 'deepseek-chat',
+                            messages: [{ role: 'user', content: prompt }],
+                            temperature: 0.3
+                        })
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        const content = data.choices[0].message.content;
+                        console.log('DeepSeek response:', content);
+                        const jsonMatch = content.match(/\[[\s\S]*?\]/);
+                        if (jsonMatch) {
+                            JSON.parse(jsonMatch[0]).forEach(v => variants.add(v));
+                        }
+                    } else {
+                        console.error('DeepSeek error:', response.status);
+                    }
+                } catch (e) {
+                    console.log('DeepSeek unavailable, using built-in translations:', e.message);
+                }
+            }
+            
+            // 返回结果（至少包含原始输入）
+            if (variants.size === 0) {
                 return [chineseName];
             }
-
-            const prompt = `你是一个专业的中英文翻译助手，专门处理公司名称和人名的翻译。
-
-请将以下名称翻译成所有可能的英文变体。考虑：
-1. 官方英文名称
-2. 拼音音译
-3. 意译
-4. 常见的简称或缩写
-5. 可能的别名
-
-输入名称：${chineseName}
-
-请只返回 JSON 数组格式，不要其他解释，例如：
-["Huawei", "Huawei Technologies", "Huawei Technologies Co., Ltd."]
-
-如果输入已经是英文，也请返回可能的变体形式。`;
-
-            try {
-                const response = await fetch(DEEPSEEK_API_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${apiKey}`
-                    },
-                    body: JSON.stringify({
-                        model: 'deepseek-chat',
-                        messages: [{ role: 'user', content: prompt }],
-                        temperature: 0.3
-                    })
-                });
-
-                if (!response.ok) {
-                    console.error('DeepSeek API error:', response.status);
-                    return [chineseName];
-                }
-
-                const data = await response.json();
-                const content = data.choices[0].message.content;
-                
-                const jsonMatch = content.match(/\[[\s\S]*\]/);
-                if (jsonMatch) {
-                    return JSON.parse(jsonMatch[0]);
-                }
-            } catch (e) {
-                console.error('Translation error:', e);
-            }
-            
-            return [chineseName];
+            return Array.from(variants);
         }
 
-        // ===== CSL 查询 =====
+        // ===== 数据库查询 =====
         async function searchCSL(name, fuzzy = true) {
             const apiKey = getCslApiKey();
-            console.log('CSL API Key:', apiKey ? `${apiKey.substring(0, 8)}...` : 'NULL');
+            console.log('Key:', apiKey ? `${apiKey.substring(0, 8)}...` : 'NULL');
             
             if (!apiKey) {
-                throw new Error('请先配置 CSL API Key');
+                throw new Error('请先配置密钥');
             }
 
             const params = new URLSearchParams();
-            // 通过 URL 参数传递 subscription key（避免 CORS 预检问题）
+            // 通过 URL 参数传递 subscription key
             params.append('subscription-key', apiKey);
             
             if (fuzzy) {
@@ -710,7 +830,7 @@
             }
 
             const url = `${CSL_API_URL}?${params}`;
-            console.log('CSL API URL:', url);
+            console.log('Query:', url.replace(apiKey, '***'));
 
             const response = await fetch(url, {
                 method: 'GET',
@@ -721,27 +841,98 @@
             
             if (!response.ok) {
                 const errorText = await response.text();
-                console.error('CSL API Error:', response.status, errorText);
+                console.error('Error:', response.status, errorText);
                 if (response.status === 401 || response.status === 403) {
-                    throw new Error('CSL API Key 无效或已过期');
+                    throw new Error('密钥无效或已过期');
                 }
-                throw new Error(`CSL API 错误 (${response.status})`);
+                throw new Error(`查询错误 (${response.status})`);
             }
 
             const data = await response.json();
-            console.log('CSL Response:', data);
+            console.log('Results:', data.total || 0);
             return data.results || [];
         }
 
-        // ===== 结果去重 =====
-        function deduplicateResults(results) {
-            const seen = new Set();
-            return results.filter(item => {
-                const key = `${item.name}-${item.source}`;
-                if (seen.has(key)) return false;
-                seen.add(key);
-                return true;
+        // ===== 结果去重与排序 =====
+        function deduplicateAndRankResults(results, originalQuery) {
+            // 来源优先级（越高越重要）
+            const SOURCE_PRIORITY = {
+                'SDN': 100,           // OFAC 特别指定国民 - 最严格
+                'Entity List': 90,    // 实体清单
+                'MEU': 85,            // 军事最终用户
+                'DPL': 80,            // 拒绝人员清单
+                'UVL': 70,            // 未经验证清单
+                'CMIC': 75,           // 中国军工企业
+                'SSI': 65,            // 部门制裁
+                'DTC': 60,            // ITAR
+                'ISN': 55,            // 防扩散
+                'CAP': 50,
+                'FSE': 50,
+                'PLC': 45,
+                'MBS': 40
+            };
+            
+            // 计算名称相似度（简化版）
+            function similarity(name, query) {
+                if (!name || !query) return 0;
+                const n = name.toLowerCase();
+                const q = query.toLowerCase();
+                if (n === q) return 100;
+                if (n.includes(q) || q.includes(n)) return 80;
+                // 检查单词匹配
+                const nWords = n.split(/\s+/);
+                const qWords = q.split(/\s+/);
+                const matchCount = qWords.filter(w => nWords.some(nw => nw.includes(w) || w.includes(nw))).length;
+                return matchCount / qWords.length * 60;
+            }
+            
+            // 按实体名称分组，合并来源
+            const entityMap = new Map();
+            
+            results.forEach(item => {
+                const key = (item.name || '').toLowerCase().trim();
+                if (!key) return;
+                
+                if (entityMap.has(key)) {
+                    // 合并来源
+                    const existing = entityMap.get(key);
+                    if (item.source && !existing.sources.includes(item.source)) {
+                        existing.sources.push(item.source);
+                    }
+                    // 保留更高的 score
+                    if (item.score && item.score > existing.score) {
+                        existing.score = item.score;
+                    }
+                } else {
+                    entityMap.set(key, {
+                        ...item,
+                        sources: [item.source].filter(Boolean),
+                        score: item.score || 0
+                    });
+                }
             });
+            
+            // 转换为数组并计算综合评分
+            const ranked = Array.from(entityMap.values()).map(item => {
+                // 计算来源优先级（取最高）
+                const maxSourcePriority = Math.max(
+                    ...item.sources.map(s => SOURCE_PRIORITY[s] || 30)
+                );
+                
+                // 计算与查询的相似度
+                const nameSimilarity = similarity(item.name, originalQuery);
+                
+                // 综合评分 = API评分(40%) + 来源优先级(35%) + 名称相似度(25%)
+                const apiScore = item.score ? Math.min(item.score, 100) : 50;
+                const finalScore = apiScore * 0.4 + maxSourcePriority * 0.35 + nameSimilarity * 0.25;
+                
+                return { ...item, finalScore, maxSourcePriority };
+            });
+            
+            // 排序：综合评分降序
+            ranked.sort((a, b) => b.finalScore - a.finalScore);
+            
+            return ranked;
         }
 
         // ===== 主搜索流程 =====
@@ -758,21 +949,21 @@
                 return;
             }
 
-            // 检查 CSL API Key
+            // 检查 API Key
             if (!getCslApiKey()) {
-                alert('请先在上方配置 CSL API Key');
+                alert('请先配置密钥一');
                 document.getElementById('apiSection').open = true;
                 document.getElementById('cslApiKeyInput').focus();
                 return;
             }
 
             searchBtn.disabled = true;
-            searchBtn.textContent = '筛查中...';
+            searchBtn.textContent = '检索中...';
             transPreview.innerHTML = '';
             resultsArea.innerHTML = `
                 <div class="status loading">
                     <div class="spinner"></div>
-                    <div>正在进行智能筛查...</div>
+                    <div>正在检索...</div>
                 </div>
             `;
 
@@ -784,7 +975,7 @@
                     resultsArea.innerHTML = `
                         <div class="status loading">
                             <div class="spinner"></div>
-                            <div>AI 正在识别英文名称变体...</div>
+                            <div>正在识别变体...</div>
                         </div>
                     `;
                     
@@ -794,7 +985,7 @@
                     if (translated.length > 1 || translated[0] !== input) {
                         transPreview.innerHTML = `
                             <div class="translation-preview">
-                                <div class="translation-label">// AI 识别的英文变体</div>
+                                <div class="translation-label">// 识别的变体</div>
                                 <div class="translation-variants">
                                     ${translated.map(v => `<span class="variant-tag">${v}</span>`).join('')}
                                 </div>
@@ -806,7 +997,7 @@
                 resultsArea.innerHTML = `
                     <div class="status loading">
                         <div class="spinner"></div>
-                        <div>正在查询 CSL 数据库（${searchVariants.length} 个变体）...</div>
+                        <div>正在查询（${searchVariants.length} 个变体）...</div>
                     </div>
                 `;
 
@@ -820,7 +1011,7 @@
                     }
                 }
 
-                const uniqueResults = deduplicateResults(allResults);
+                const uniqueResults = deduplicateAndRankResults(allResults, input);
                 displayResults(uniqueResults, input);
 
             } catch (error) {
@@ -831,7 +1022,7 @@
                 `;
             } finally {
                 searchBtn.disabled = false;
-                searchBtn.textContent = '开始筛查';
+                searchBtn.textContent = '检索';
             }
         }
 
@@ -843,8 +1034,8 @@
                 resultsArea.innerHTML = `
                     <div class="clear-result">
                         <div class="clear-icon">✓</div>
-                        <h3>未发现匹配记录</h3>
-                        <p>「${query}」在 CSL 综合筛查名单中未找到匹配项</p>
+                        <h3>未发现匹配</h3>
+                        <p>「${query}」无匹配记录</p>
                     </div>
                 `;
                 return;
@@ -853,13 +1044,13 @@
             let html = `
                 <div class="results-header">
                     <div class="results-count">
-                        ⚠️ 发现 <span class="number">${results.length}</span> 条潜在匹配
+                        ⚠️ 发现 <span class="number">${results.length}</span> 条记录
                     </div>
                 </div>
             `;
 
-            results.forEach(item => {
-                // 处理 alt_names：可能是数组或分号分隔的字符串
+            results.forEach((item, index) => {
+                // 处理 alt_names
                 let aliases = [];
                 if (item.alt_names) {
                     if (Array.isArray(item.alt_names)) {
@@ -869,7 +1060,7 @@
                     }
                 }
                 
-                // 处理 addresses：可能是数组或字符串
+                // 处理 addresses
                 let addresses = '';
                 if (item.addresses) {
                     if (Array.isArray(item.addresses)) {
@@ -879,15 +1070,24 @@
                     }
                 }
                 
+                // 来源标签（多个）
+                const sources = item.sources || [item.source].filter(Boolean);
+                const sourceHtml = sources.map(s => `<span class="result-source">${s}</span>`).join(' ');
+                
+                // 风险等级指示
+                const riskLevel = item.maxSourcePriority >= 90 ? 'high' : 
+                                  item.maxSourcePriority >= 70 ? 'medium' : 'low';
+                
                 html += `
-                    <div class="result-card">
+                    <div class="result-card risk-${riskLevel}">
+                        <div class="result-rank">#${index + 1}</div>
                         <div class="result-name">${item.name || 'N/A'}</div>
                         <div class="result-meta">
                             <span class="meta-item"><strong>类型:</strong> ${item.type || 'N/A'}</span>
                             <span class="meta-item"><strong>国家:</strong> ${item.country || item.countries || 'N/A'}</span>
                             ${addresses ? `<span class="meta-item"><strong>地址:</strong> ${addresses.slice(0, 80)}${addresses.length > 80 ? '...' : ''}</span>` : ''}
                         </div>
-                        <span class="result-source">${item.source || 'Unknown'}</span>
+                        <div class="result-sources">${sourceHtml}</div>
                         ${aliases.length > 0 ? `
                             <div class="result-aliases">
                                 <strong>别名：</strong>${aliases.slice(0, 5).join(' · ')}${aliases.length > 5 ? ' ...' : ''}
