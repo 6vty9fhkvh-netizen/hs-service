@@ -151,6 +151,28 @@
             border-bottom: 1px solid var(--border);
         }
 
+        .api-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .api-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .api-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .api-label .required {
+            color: var(--accent-red);
+            font-size: 0.7rem;
+        }
+
         .api-input-group {
             display: flex;
             gap: 0.75rem;
@@ -188,14 +210,37 @@
         }
 
         .api-hint {
-            margin-top: 1rem;
-            font-size: 0.8rem;
+            margin-top: 0.5rem;
+            font-size: 0.75rem;
             color: var(--text-dim);
         }
 
         .api-hint a {
             color: var(--accent-blue);
             text-decoration: none;
+        }
+
+        .api-status {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+            font-size: 0.8rem;
+        }
+
+        .api-status-item {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        .api-status-item.ok {
+            color: var(--accent-green);
+        }
+
+        .api-status-item.missing {
+            color: var(--accent-orange);
         }
 
         /* Search Box */
@@ -535,14 +580,38 @@
         </section>
 
         <details class="api-section" id="apiSection">
-            <summary>⚙️ API 设置（首次使用请配置 DeepSeek API Key）</summary>
-            <div class="api-input-group">
-                <input type="password" class="api-input" id="apiKeyInput" placeholder="输入 DeepSeek API Key">
-                <button class="api-save-btn" onclick="saveApiKey()">保存</button>
+            <summary>⚙️ API 设置（首次使用请配置）</summary>
+            
+            <!-- ITA CSL API Key -->
+            <div class="api-group">
+                <div class="api-label">
+                    ITA CSL API Key <span class="required">必需</span>
+                </div>
+                <div class="api-input-group">
+                    <input type="password" class="api-input" id="itaApiKeyInput" placeholder="输入 ITA Subscription Key">
+                    <button class="api-save-btn" onclick="saveItaApiKey()">保存</button>
+                </div>
+                <p class="api-hint">
+                    获取方式：访问 <a href="https://developer.trade.gov/" target="_blank">developer.trade.gov</a> → 注册账号 → Products → Subscribe → 复制 Primary Key（免费）
+                </p>
             </div>
-            <p class="api-hint">
-                获取方式：访问 <a href="https://platform.deepseek.com/" target="_blank">platform.deepseek.com</a> 注册账号，创建 API Key（注册即送免费额度）
-            </p>
+
+            <!-- DeepSeek API Key -->
+            <div class="api-group">
+                <div class="api-label">
+                    DeepSeek API Key <span style="color: var(--text-dim);">（中文翻译，可选）</span>
+                </div>
+                <div class="api-input-group">
+                    <input type="password" class="api-input" id="deepseekApiKeyInput" placeholder="输入 DeepSeek API Key">
+                    <button class="api-save-btn" onclick="saveDeepseekApiKey()">保存</button>
+                </div>
+                <p class="api-hint">
+                    获取方式：访问 <a href="https://platform.deepseek.com/" target="_blank">platform.deepseek.com</a>（不配置则跳过 AI 翻译）
+                </p>
+            </div>
+
+            <!-- Status -->
+            <div class="api-status" id="apiStatus"></div>
         </details>
 
         <div class="search-container">
@@ -562,8 +631,8 @@
                     启用模糊匹配
                 </label>
                 <label class="option-label">
-                    <input type="checkbox" id="showTranslation" checked>
-                    显示翻译变体
+                    <input type="checkbox" id="useAiTranslation" checked>
+                    AI 中文翻译
                 </label>
             </div>
         </div>
@@ -590,42 +659,77 @@
     <script>
         // ===== 配置 =====
         const DEEPSEEK_API_URL = 'https://api.deepseek.com/chat/completions';
-        const CSL_API_URL = 'https://api.trade.gov/gateway/v1/consolidated_screening_list/search';
+        const CSL_API_URL = 'https://api.trade.gov/gateway/v1/consolidated_screening_list/v1/search';
 
         // ===== API Key 管理 =====
-        function saveApiKey() {
-            const key = document.getElementById('apiKeyInput').value.trim();
+        function saveItaApiKey() {
+            const key = document.getElementById('itaApiKeyInput').value.trim();
             if (key) {
-                localStorage.setItem('deepseek_api_key', key);
-                document.getElementById('apiSection').removeAttribute('open');
-                showToast('API Key 已保存');
+                localStorage.setItem('ita_api_key', key);
+                updateApiStatus();
+                alert('ITA API Key 已保存');
             }
         }
 
-        function getApiKey() {
+        function saveDeepseekApiKey() {
+            const key = document.getElementById('deepseekApiKeyInput').value.trim();
+            if (key) {
+                localStorage.setItem('deepseek_api_key', key);
+                updateApiStatus();
+                alert('DeepSeek API Key 已保存');
+            }
+        }
+
+        function getItaApiKey() {
+            return localStorage.getItem('ita_api_key');
+        }
+
+        function getDeepseekApiKey() {
             return localStorage.getItem('deepseek_api_key');
         }
 
-        function showToast(msg) {
-            alert(msg); // 简化版，可以换成更好看的 toast
+        function updateApiStatus() {
+            const itaKey = getItaApiKey();
+            const deepseekKey = getDeepseekApiKey();
+            
+            const statusHtml = `
+                <span class="api-status-item ${itaKey ? 'ok' : 'missing'}">
+                    ${itaKey ? '✓' : '○'} ITA CSL
+                </span>
+                <span class="api-status-item ${deepseekKey ? 'ok' : 'missing'}">
+                    ${deepseekKey ? '✓' : '○'} DeepSeek
+                </span>
+            `;
+            document.getElementById('apiStatus').innerHTML = statusHtml;
         }
 
         // 页面加载时检查
         window.onload = function() {
-            const savedKey = getApiKey();
-            if (savedKey) {
-                document.getElementById('apiKeyInput').value = savedKey;
-            } else {
+            const itaKey = getItaApiKey();
+            const deepseekKey = getDeepseekApiKey();
+            
+            if (itaKey) {
+                document.getElementById('itaApiKeyInput').value = itaKey;
+            }
+            if (deepseekKey) {
+                document.getElementById('deepseekApiKeyInput').value = deepseekKey;
+            }
+            
+            updateApiStatus();
+            
+            // 如果没有 ITA key，展开设置
+            if (!itaKey) {
                 document.getElementById('apiSection').setAttribute('open', '');
             }
+            
             document.getElementById('searchInput').focus();
         };
 
         // ===== AI 翻译 =====
         async function translateToEnglish(chineseName) {
-            const apiKey = getApiKey();
+            const apiKey = getDeepseekApiKey();
             if (!apiKey) {
-                throw new Error('请先配置 DeepSeek API Key');
+                return [chineseName]; // 没有 key 就返回原文
             }
 
             const prompt = `你是一个专业的中英文翻译助手，专门处理公司名称和人名的翻译。
@@ -644,36 +748,36 @@
 
 如果输入已经是英文，也请返回可能的变体形式。`;
 
-            const response = await fetch(DEEPSEEK_API_URL, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${apiKey}`
-                },
-                body: JSON.stringify({
-                    model: 'deepseek-chat',
-                    messages: [
-                        { role: 'user', content: prompt }
-                    ],
-                    temperature: 0.3
-                })
-            });
-
-            if (!response.ok) {
-                const err = await response.json();
-                throw new Error(err.error?.message || 'DeepSeek API 调用失败');
-            }
-
-            const data = await response.json();
-            const content = data.choices[0].message.content;
-            
             try {
+                const response = await fetch(DEEPSEEK_API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${apiKey}`
+                    },
+                    body: JSON.stringify({
+                        model: 'deepseek-chat',
+                        messages: [
+                            { role: 'user', content: prompt }
+                        ],
+                        temperature: 0.3
+                    })
+                });
+
+                if (!response.ok) {
+                    console.error('DeepSeek API error');
+                    return [chineseName];
+                }
+
+                const data = await response.json();
+                const content = data.choices[0].message.content;
+                
                 const jsonMatch = content.match(/\[[\s\S]*\]/);
                 if (jsonMatch) {
                     return JSON.parse(jsonMatch[0]);
                 }
             } catch (e) {
-                console.error('JSON 解析失败:', content);
+                console.error('Translation error:', e);
             }
             
             return [chineseName];
@@ -681,15 +785,27 @@
 
         // ===== CSL 查询 =====
         async function searchCSL(name, fuzzy = true) {
+            const apiKey = getItaApiKey();
+            if (!apiKey) {
+                throw new Error('请先配置 ITA CSL API Key');
+            }
+
             const params = new URLSearchParams({
                 q: name,
                 fuzzy_name: fuzzy.toString()
             });
 
-            const response = await fetch(`${CSL_API_URL}?${params}`);
+            const response = await fetch(`${CSL_API_URL}?${params}`, {
+                method: 'GET',
+                headers: {
+                    'Ocp-Apim-Subscription-Key': apiKey
+                }
+            });
             
             if (!response.ok) {
-                throw new Error('CSL API 调用失败');
+                const errorText = await response.text();
+                console.error('CSL API Error:', response.status, errorText);
+                throw new Error(`CSL API 错误 (${response.status}): 请检查 API Key 是否正确`);
             }
 
             const data = await response.json();
@@ -713,19 +829,19 @@
         async function performSearch() {
             const input = document.getElementById('searchInput').value.trim();
             const fuzzy = document.getElementById('fuzzySearch').checked;
-            const showTrans = document.getElementById('showTranslation').checked;
+            const useAi = document.getElementById('useAiTranslation').checked;
             const resultsArea = document.getElementById('resultsArea');
             const transPreview = document.getElementById('translationPreview');
             const searchBtn = document.getElementById('searchBtn');
 
             if (!input) {
-                showToast('请输入要筛查的名称');
+                alert('请输入要筛查的名称');
                 return;
             }
 
-            if (!getApiKey()) {
+            if (!getItaApiKey()) {
                 document.getElementById('apiSection').setAttribute('open', '');
-                showToast('请先配置 DeepSeek API Key');
+                alert('请先配置 ITA CSL API Key');
                 return;
             }
 
@@ -744,7 +860,8 @@
                 const hasChinese = /[\u4e00-\u9fa5]/.test(input);
                 let searchVariants = [input];
 
-                if (hasChinese) {
+                // 如果是中文且启用了 AI 翻译
+                if (hasChinese && useAi && getDeepseekApiKey()) {
                     resultsArea.innerHTML = `
                         <div class="status loading">
                             <div class="spinner"></div>
@@ -755,7 +872,7 @@
                     const translated = await translateToEnglish(input);
                     searchVariants = [...new Set([input, ...translated])];
                     
-                    if (showTrans && translated.length > 0) {
+                    if (translated.length > 1 || translated[0] !== input) {
                         transPreview.innerHTML = `
                             <div class="translation-preview">
                                 <div class="translation-label">// AI 识别的英文变体</div>
@@ -776,8 +893,12 @@
 
                 let allResults = [];
                 for (const variant of searchVariants) {
-                    const results = await searchCSL(variant, fuzzy);
-                    allResults = allResults.concat(results);
+                    try {
+                        const results = await searchCSL(variant, fuzzy);
+                        allResults = allResults.concat(results);
+                    } catch (e) {
+                        console.error(`Search failed for ${variant}:`, e);
+                    }
                 }
 
                 const uniqueResults = deduplicateResults(allResults);
