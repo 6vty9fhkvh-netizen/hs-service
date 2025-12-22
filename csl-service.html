@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSL 制裁名单筛查 | Legal AI Service</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0a0b;
+            --bg-secondary: #111113;
+            --bg-card: #161618;
+            --bg-card-hover: #1c1c1f;
+            --border: #2a2a2e;
+            --border-hover: #3a3a3f;
+            --text-primary: #f0f0f2;
+            --text-secondary: #8a8a8e;
+            --text-dim: #5a5a5e;
+            --accent-blue: #3b82f6;
+            --accent-green: #22c55e;
+            --accent-orange: #f59e0b;
+            --accent-red: #ef4444;
+            --font-sans: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-mono: 'IBM Plex Mono', monospace;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Header */
+        header {
+            padding: 1.5rem 0;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 2rem;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .back-link {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.15s;
+        }
+
+        .back-link:hover {
+            color: var(--text-primary);
+        }
+
+        .header-badge {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--accent-red);
+            background: rgba(239, 68, 68, 0.1);
+            padding: 0.35rem 0.75rem;
+            border-radius: 4px;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        /* Title Section */
+        .title-section {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .title-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .title-section h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            margin-bottom: 0.5rem;
+        }
+
+        .title-section p {
+            color: var(--text-secondary);
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        /* API Section */
+        .api-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .api-section summary {
+            cursor: pointer;
+            font-weight: 500;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .api-section summary:hover {
+            color: var(--text-primary);
+        }
+
+        .api-section[open] summary {
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .api-input-group {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .api-input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-family: var(--font-mono);
+            font-size: 0.875rem;
+        }
+
+        .api-input:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+        }
+
+        .api-save-btn {
+            padding: 0.75rem 1.5rem;
+            background: var(--bg-card-hover);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .api-save-btn:hover {
+            background: var(--border);
+        }
+
+        .api-hint {
+            margin-top: 1rem;
+            font-size: 0.8rem;
+            color: var(--text-dim);
+        }
+
+        .api-hint a {
+            color: var(--accent-blue);
+            text-decoration: none;
+        }
+
+        /* Search Box */
+        .search-container {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .search-input-wrapper {
+            position: relative;
+            margin-bottom: 1.25rem;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1.1rem 1.5rem;
+            padding-right: 130px;
+            background: var(--bg-primary);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 1.1rem;
+            font-family: var(--font-sans);
+            transition: border-color 0.15s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--accent-red);
+        }
+
+        .search-input::placeholder {
+            color: var(--text-dim);
+        }
+
+        .search-btn {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            padding: 0.75rem 1.5rem;
+            background: var(--accent-red);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .search-btn:hover {
+            background: #dc2626;
+        }
+
+        .search-btn:disabled {
+            background: var(--border);
+            cursor: not-allowed;
+        }
+
+        .search-options {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+
+        .option-label input {
+            accent-color: var(--accent-red);
+            width: 16px;
+            height: 16px;
+        }
+
+        /* Translation Preview */
+        .translation-preview {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .translation-label {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.75rem;
+        }
+
+        .translation-variants {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .variant-tag {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--accent-blue);
+            padding: 0.4rem 0.75rem;
+            border-radius: 6px;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        /* Status */
+        .status {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: var(--text-secondary);
+        }
+
+        .status.loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .spinner {
+            width: 36px;
+            height: 36px;
+            border: 3px solid var(--border);
+            border-top-color: var(--accent-red);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Results */
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .results-count {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .results-count .number {
+            color: var(--accent-orange);
+        }
+
+        .result-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--accent-red);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: all 0.15s;
+        }
+
+        .result-card:hover {
+            border-color: var(--border-hover);
+            transform: translateX(4px);
+        }
+
+        .result-name {
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.01em;
+        }
+
+        .result-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .meta-item {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .meta-item strong {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .result-source {
+            display: inline-block;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            background: rgba(239, 68, 68, 0.1);
+            padding: 0.3rem 0.6rem;
+            border-radius: 4px;
+            color: var(--accent-red);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .result-aliases {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .result-aliases strong {
+            color: var(--text-primary);
+        }
+
+        .clear-result {
+            background: var(--bg-card);
+            border: 1px solid var(--accent-green);
+            border-radius: 16px;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .clear-icon {
+            width: 64px;
+            height: 64px;
+            background: rgba(34, 197, 94, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 1rem;
+        }
+
+        .clear-result h3 {
+            color: var(--accent-green);
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .clear-result p {
+            color: var(--text-secondary);
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 2rem 0;
+            margin-top: 3rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            color: var(--text-dim);
+            font-size: 0.85rem;
+        }
+
+        .footer-content a {
+            color: var(--text-secondary);
+            text-decoration: none;
+        }
+
+        /* Source Legend */
+        .source-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            justify-content: center;
+            margin-bottom: 1rem;
+            font-size: 0.75rem;
+            color: var(--text-dim);
+        }
+
+        .source-legend span {
+            font-family: var(--font-mono);
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .search-input {
+                padding-right: 1rem;
+            }
+
+            .search-btn {
+                position: static;
+                transform: none;
+                width: 100%;
+                margin-top: 0.75rem;
+                padding: 1rem;
+            }
+
+            .search-input-wrapper {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .api-input-group {
+                flex-direction: column;
+            }
+
+            .container {
+                padding: 0 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="grid-bg"></div>
+
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <a href="index.html" class="back-link">← 返回工具列表</a>
+                <div class="header-badge">CSL Screening</div>
+            </div>
+        </header>
+
+        <section class="title-section">
+            <div class="title-icon">🛡️</div>
+            <h1>CSL 制裁名单筛查</h1>
+            <p>支持中英文输入，AI 智能翻译匹配美国综合筛查名单</p>
+        </section>
+
+        <details class="api-section" id="apiSection">
+            <summary>⚙️ API 设置（首次使用请配置 DeepSeek API Key）</summary>
+            <div class="api-input-group">
+                <input type="password" class="api-input" id="apiKeyInput" placeholder="输入 DeepSeek API Key">
+                <button class="api-save-btn" onclick="saveApiKey()">保存</button>
+            </div>
+            <p class="api-hint">
+                获取方式：访问 <a href="https://platform.deepseek.com/" target="_blank">platform.deepseek.com</a> 注册账号，创建 API Key（注册即送免费额度）
+            </p>
+        </details>
+
+        <div class="search-container">
+            <div class="search-input-wrapper">
+                <input 
+                    type="text" 
+                    class="search-input" 
+                    id="searchInput" 
+                    placeholder="输入公司或个人名称，如：华为、中兴、Huawei..."
+                    onkeypress="if(event.key === 'Enter') performSearch()"
+                >
+                <button class="search-btn" id="searchBtn" onclick="performSearch()">开始筛查</button>
+            </div>
+            <div class="search-options">
+                <label class="option-label">
+                    <input type="checkbox" id="fuzzySearch" checked>
+                    启用模糊匹配
+                </label>
+                <label class="option-label">
+                    <input type="checkbox" id="showTranslation" checked>
+                    显示翻译变体
+                </label>
+            </div>
+        </div>
+
+        <div id="translationPreview"></div>
+        <div id="resultsArea"></div>
+
+        <footer>
+            <div class="footer-content">
+                <div class="source-legend">
+                    <span>SDN = OFAC 特别指定国民</span>
+                    <span>EL = 实体清单</span>
+                    <span>DPL = 拒绝人员清单</span>
+                    <span>UVL = 未经验证清单</span>
+                </div>
+                <p>
+                    数据来源：<a href="https://www.trade.gov/consolidated-screening-list" target="_blank">U.S. ITA Consolidated Screening List</a>
+                    · 本工具仅供参考
+                </p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // ===== 配置 =====
+        const DEEPSEEK_API_URL = 'https://api.deepseek.com/chat/completions';
+        const CSL_API_URL = 'https://api.trade.gov/gateway/v1/consolidated_screening_list/search';
+
+        // ===== API Key 管理 =====
+        function saveApiKey() {
+            const key = document.getElementById('apiKeyInput').value.trim();
+            if (key) {
+                localStorage.setItem('deepseek_api_key', key);
+                document.getElementById('apiSection').removeAttribute('open');
+                showToast('API Key 已保存');
+            }
+        }
+
+        function getApiKey() {
+            return localStorage.getItem('deepseek_api_key');
+        }
+
+        function showToast(msg) {
+            alert(msg); // 简化版，可以换成更好看的 toast
+        }
+
+        // 页面加载时检查
+        window.onload = function() {
+            const savedKey = getApiKey();
+            if (savedKey) {
+                document.getElementById('apiKeyInput').value = savedKey;
+            } else {
+                document.getElementById('apiSection').setAttribute('open', '');
+            }
+            document.getElementById('searchInput').focus();
+        };
+
+        // ===== AI 翻译 =====
+        async function translateToEnglish(chineseName) {
+            const apiKey = getApiKey();
+            if (!apiKey) {
+                throw new Error('请先配置 DeepSeek API Key');
+            }
+
+            const prompt = `你是一个专业的中英文翻译助手，专门处理公司名称和人名的翻译。
+
+请将以下名称翻译成所有可能的英文变体。考虑：
+1. 官方英文名称
+2. 拼音音译
+3. 意译
+4. 常见的简称或缩写
+5. 可能的别名
+
+输入名称：${chineseName}
+
+请只返回 JSON 数组格式，不要其他解释，例如：
+["Huawei", "Huawei Technologies", "Huawei Technologies Co., Ltd."]
+
+如果输入已经是英文，也请返回可能的变体形式。`;
+
+            const response = await fetch(DEEPSEEK_API_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${apiKey}`
+                },
+                body: JSON.stringify({
+                    model: 'deepseek-chat',
+                    messages: [
+                        { role: 'user', content: prompt }
+                    ],
+                    temperature: 0.3
+                })
+            });
+
+            if (!response.ok) {
+                const err = await response.json();
+                throw new Error(err.error?.message || 'DeepSeek API 调用失败');
+            }
+
+            const data = await response.json();
+            const content = data.choices[0].message.content;
+            
+            try {
+                const jsonMatch = content.match(/\[[\s\S]*\]/);
+                if (jsonMatch) {
+                    return JSON.parse(jsonMatch[0]);
+                }
+            } catch (e) {
+                console.error('JSON 解析失败:', content);
+            }
+            
+            return [chineseName];
+        }
+
+        // ===== CSL 查询 =====
+        async function searchCSL(name, fuzzy = true) {
+            const params = new URLSearchParams({
+                q: name,
+                fuzzy_name: fuzzy.toString()
+            });
+
+            const response = await fetch(`${CSL_API_URL}?${params}`);
+            
+            if (!response.ok) {
+                throw new Error('CSL API 调用失败');
+            }
+
+            const data = await response.json();
+            return data.results || [];
+        }
+
+        // ===== 结果去重 =====
+        function deduplicateResults(results) {
+            const seen = new Set();
+            return results.filter(item => {
+                const key = `${item.name}-${item.source}`;
+                if (seen.has(key)) {
+                    return false;
+                }
+                seen.add(key);
+                return true;
+            });
+        }
+
+        // ===== 主搜索流程 =====
+        async function performSearch() {
+            const input = document.getElementById('searchInput').value.trim();
+            const fuzzy = document.getElementById('fuzzySearch').checked;
+            const showTrans = document.getElementById('showTranslation').checked;
+            const resultsArea = document.getElementById('resultsArea');
+            const transPreview = document.getElementById('translationPreview');
+            const searchBtn = document.getElementById('searchBtn');
+
+            if (!input) {
+                showToast('请输入要筛查的名称');
+                return;
+            }
+
+            if (!getApiKey()) {
+                document.getElementById('apiSection').setAttribute('open', '');
+                showToast('请先配置 DeepSeek API Key');
+                return;
+            }
+
+            // 显示加载状态
+            searchBtn.disabled = true;
+            searchBtn.textContent = '筛查中...';
+            transPreview.innerHTML = '';
+            resultsArea.innerHTML = `
+                <div class="status loading">
+                    <div class="spinner"></div>
+                    <div>正在进行智能筛查...</div>
+                </div>
+            `;
+
+            try {
+                const hasChinese = /[\u4e00-\u9fa5]/.test(input);
+                let searchVariants = [input];
+
+                if (hasChinese) {
+                    resultsArea.innerHTML = `
+                        <div class="status loading">
+                            <div class="spinner"></div>
+                            <div>AI 正在识别英文名称变体...</div>
+                        </div>
+                    `;
+                    
+                    const translated = await translateToEnglish(input);
+                    searchVariants = [...new Set([input, ...translated])];
+                    
+                    if (showTrans && translated.length > 0) {
+                        transPreview.innerHTML = `
+                            <div class="translation-preview">
+                                <div class="translation-label">// AI 识别的英文变体</div>
+                                <div class="translation-variants">
+                                    ${translated.map(v => `<span class="variant-tag">${v}</span>`).join('')}
+                                </div>
+                            </div>
+                        `;
+                    }
+                }
+
+                resultsArea.innerHTML = `
+                    <div class="status loading">
+                        <div class="spinner"></div>
+                        <div>正在查询 CSL 数据库（${searchVariants.length} 个变体）...</div>
+                    </div>
+                `;
+
+                let allResults = [];
+                for (const variant of searchVariants) {
+                    const results = await searchCSL(variant, fuzzy);
+                    allResults = allResults.concat(results);
+                }
+
+                const uniqueResults = deduplicateResults(allResults);
+                displayResults(uniqueResults, input);
+
+            } catch (error) {
+                resultsArea.innerHTML = `
+                    <div class="status" style="color: var(--accent-red);">
+                        ❌ 查询出错：${error.message}
+                    </div>
+                `;
+            } finally {
+                searchBtn.disabled = false;
+                searchBtn.textContent = '开始筛查';
+            }
+        }
+
+        // ===== 显示结果 =====
+        function displayResults(results, query) {
+            const resultsArea = document.getElementById('resultsArea');
+
+            if (results.length === 0) {
+                resultsArea.innerHTML = `
+                    <div class="clear-result">
+                        <div class="clear-icon">✓</div>
+                        <h3>未发现匹配记录</h3>
+                        <p>「${query}」在 CSL 综合筛查名单中未找到匹配项</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = `
+                <div class="results-header">
+                    <div class="results-count">
+                        ⚠️ 发现 <span class="number">${results.length}</span> 条潜在匹配
+                    </div>
+                </div>
+            `;
+
+            results.forEach(item => {
+                const aliases = item.alt_names ? item.alt_names.split(';').filter(a => a.trim()) : [];
+                
+                html += `
+                    <div class="result-card">
+                        <div class="result-name">${item.name || 'N/A'}</div>
+                        <div class="result-meta">
+                            <span class="meta-item"><strong>类型:</strong> ${item.type || 'N/A'}</span>
+                            <span class="meta-item"><strong>国家:</strong> ${item.country || item.countries || 'N/A'}</span>
+                            ${item.addresses ? `<span class="meta-item"><strong>地址:</strong> ${String(item.addresses).slice(0, 80)}...</span>` : ''}
+                        </div>
+                        <span class="result-source">${item.source || 'Unknown'}</span>
+                        ${aliases.length > 0 ? `
+                            <div class="result-aliases">
+                                <strong>别名：</strong>${aliases.slice(0, 5).join(' · ')}${aliases.length > 5 ? ' ...' : ''}
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            });
+
+            resultsArea.innerHTML = html;
+        }
+    </script>
+</body>
+</html>
